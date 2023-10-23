@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2.0,
+    "id": "bghosts",
+    "name": "Compliances/compliance tree",
+    "version": "4.0.0",
+    "namespace": "BGmotHosts",
+    "author": "Leroy Merlin Connectivity",
+    "url": "https://bgmot.com",
+    "description": "Show Compliances/compliance as a tree under Monitoring",
+    "actions": {
+        "bghost.view": {
+            "class": "CControllerBGHostView",
+            "view": "module.monitoring.bghost.view"
+        },
+        "bghost.view.refresh": {
+            "class": "CControllerBGHostViewRefresh",
+            "view": "module.monitoring.bghost.view.refresh",
+            "layout": "layout.json"
+        }
+    }
+}
