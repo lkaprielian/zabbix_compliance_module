@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
  
-namespace Modules\BGmotHosts;
+namespace Modules\Compliance;
  
 use APP;
 use CController as CAction;
@@ -23,19 +23,6 @@ class Module extends \Zabbix\Core\CModule {
 								);
 
 		}
-	// public function init(): void {
-	// 	// Initialize main menu (CMenu class instance).
-	// 	// $submenu_comliances = [
-	// 	// 	CWebUser::checkAccess(CRoleHelper::UI_ADMINISTRATION_GENERAL)
-	// 	// 		? (new CMenuItem(_('General')))
-
-	// 	APP::Component()->get('menu.main')
-	// 		->findOrAdd((_('Monitoring')))
-	// 			->setSubMenu(new \CMenu(_('Compliance tree')));
-	// }
-
-	// APP::Component()->get('menu.main')
-	// ->insertAfter(_('Administration'),((new \CMenuItem(_('Outage Contacts')))
 
 	/**
 	 * Event handler, triggered before executing the action.
