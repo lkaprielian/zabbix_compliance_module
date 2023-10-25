@@ -74,7 +74,7 @@ abstract class CControllerBGHost extends CController {
 		return (int) API::Host()->get([
 			'countOutput' => true,
 			'evaltype' => $filter['evaltype'],
-			'tags' => ($filter['tags'] === []) ? [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']] : null,
+			'tags' => $filter['tags'],
 			'inheritedTags' => true,
 			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
@@ -121,33 +121,50 @@ abstract class CControllerBGHost extends CController {
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
-		$hosts = API::Host()->get([
-			'output' => ['hostid', 'name', 'status'],
-			'evaltype' => $filter['evaltype'],
-			'tags' => ($filter['tags'] === []) ? [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']] : null,
-			'inheritedTags' => true,
-			'groupids' => $groupids,
-			'severities' => $filter['severities'] ? $filter['severities'] : null,
-			'withProblemsSuppressed' => $filter['severities']
-				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
-				: null,
-			'search' => [
-				'name' => ($filter['name'] === '') ? null : $filter['name'],
-				'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
-				'dns' => ($filter['dns'] === '') ? null : $filter['dns']
-			],
-			'filter' => [
-				'status' => ($filter['status'] == -1) ? null : $filter['status'],
-				'port' => ($filter['port'] === '') ? null : $filter['port'],
-				'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
-					? null
-					: HOST_MAINTENANCE_STATUS_OFF
-			],
-                        'selectHostGroups' => ['groupid', 'name'],
-			'sortfield' => 'name',
-			'limit' => $limit,
-			'preservekeys' => true
+
+		# get items by tag 
+		$items = API::Item()->get([
+			'output' => ["itemid"],
+			"with_triggers" => true,
+			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
+
+		# get hosts by itemids
+		$hosts = [];
+		foreach ($items as $item) {
+			$hosts_by_items = API::Host()->get([
+				'output' => ['hostid', 'name', 'status'],
+				'evaltype' => $filter['evaltype'],
+				'tags' => $filter['tags'],
+				'inheritedTags' => true,
+				'groupids' => $groupids,
+				'severities' => $filter['severities'] ? $filter['severities'] : null,
+				'withProblemsSuppressed' => $filter['severities']
+					? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
+					: null,
+				'search' => [
+					'name' => ($filter['name'] === '') ? null : $filter['name'],
+					'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
+					'dns' => ($filter['dns'] === '') ? null : $filter['dns']
+				],
+				'filter' => [
+					'status' => ($filter['status'] == -1) ? null : $filter['status'],
+					'port' => ($filter['port'] === '') ? null : $filter['port'],
+					'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
+						? null
+						: HOST_MAINTENANCE_STATUS_OFF
+				],
+							'selectHostGroups' => ['groupid', 'name'],
+				'sortfield' => 'name',
+				'limit' => $limit,
+				'preservekeys' => true,
+				'itemids' => [
+					$item['itemid']
+				]
+			]);
+
+			$hosts = $hosts + $hosts_by_items;
+		}
 
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
