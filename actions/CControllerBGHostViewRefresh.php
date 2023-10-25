@@ -57,7 +57,7 @@ class CControllerBGHostViewRefresh extends CControllerBGHostView {
 			$prepared_data = $this->getData($filter);
 
 			$view_url = (new CUrl())
-				->setArgument('action', 'bghost.view')
+				->setArgument('action', 'compliance.view')
 				->removeArgument('page');
 
 			$data = [

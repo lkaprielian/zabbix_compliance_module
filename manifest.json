@@ -7,11 +7,11 @@
     "author": "Leroy Merlin Connectivity",
     "description": "Show Compliances/compliance as a tree under Monitoring",
     "actions": {
-        "bghost.view": {
+        "compliance.view": {
             "class": "CControllerBGHostView",
             "view": "module.monitoring.bghost.view"
         },
-        "bghost.view.refresh": {
+        "compliance.view.refresh": {
             "class": "CControllerBGHostViewRefresh",
             "view": "module.monitoring.bghost.view.refresh",
             "layout": "layout.json"

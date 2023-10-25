@@ -209,7 +209,7 @@ abstract class CControllerBGHost extends CController {
 			$this->add_hosts_of_child_group($hosts_sorted_by_group, $hosts, $host_groups, $host_group_name, $filter);
 		}
 
-		$view_curl = (new CUrl())->setArgument('action', 'bghost.view');
+		$view_curl = (new CUrl())->setArgument('action', 'compliance.view');
 
 		// Split result array and create paging.
 		$paging = CPagerHelper::paginate($filter['page'], $hosts_sorted_by_group, $filter['sortorder'], $view_curl);

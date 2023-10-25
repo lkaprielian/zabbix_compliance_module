@@ -45,7 +45,7 @@
 			this.applied_filter_groupids = applied_filter_groupids;
 
 			const url = new Curl('zabbix.php', false);
-			url.setArgument('action', 'bghost.view.refresh');
+			url.setArgument('action', 'compliance.view.refresh');
 			this.refresh_simple_url = url.getUrl();
 
 			this.initTabFilter(filter_options);

@@ -108,7 +108,7 @@ class CControllerBGHostView extends CControllerBGHost {
 
 		$filter = $filter_tabs[$profile->selected];
 		$refresh_curl = new CUrl('zabbix.php');
-		$filter['action'] = 'bghost.view.refresh';
+		$filter['action'] = 'compliance.view.refresh';
 		array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
 
 		$data = [

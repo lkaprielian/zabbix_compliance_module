@@ -19,7 +19,7 @@ class Module extends \Zabbix\Core\CModule {
 						->findOrAdd(_('Compliances'))
 							->getSubmenu()
 								->insertAfter('', (new \CMenuItem(_('compliance tree')))
-									->setAction('bghost.view')
+									->setAction('compliance.view')
 								);
 
 		}
