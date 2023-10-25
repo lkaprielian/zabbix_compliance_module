@@ -154,7 +154,7 @@ abstract class CControllerBGHost extends CController {
 						? null
 						: HOST_MAINTENANCE_STATUS_OFF
 				],
-							'selectHostGroups' => ['groupid', 'name'],
+				'selectHostGroups' => ['groupid', 'name'],
 				'sortfield' => 'name',
 				'limit' => $limit,
 				'preservekeys' => true,
@@ -291,7 +291,9 @@ abstract class CControllerBGHost extends CController {
 			'objectids' => array_keys($triggers),
 			'source' => EVENT_SOURCE_TRIGGERS,
 			'object' => EVENT_OBJECT_TRIGGER,
-			'suppressed' => ($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false
+			'suppressed' => ($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false,
+			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+
 		]);
 
 		// Group all problems per host per severity.
@@ -350,6 +352,18 @@ abstract class CControllerBGHost extends CController {
 					: 0;
 			}
 
+
+			# get hosts items tags by hosts ids
+			$items_tag_by_host = [];
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				"selectTags"  => 'extend'
+				,
+				"hostids"  => $host["hostid"]
+			]);
+
+			$items_tag_by_host = $items_by_hosts[0]["tags"];
+
 			// Merge host tags with template tags, and skip duplicate tags and values.
 			if (!$host['inheritedTags']) {
 				$tags = $host['tags'];
@@ -371,8 +385,13 @@ abstract class CControllerBGHost extends CController {
 					$tags[] = $template_tag;
 				}
 			}
+			
+			# merge items tags with hosts tags
+			$tags = array_merge($tags, $items_tag_by_host);
+			// print_r($tags);
 
 			$host['tags'] = $tags;
+
 
 		}
 		unset($host);
