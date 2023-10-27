@@ -375,6 +375,7 @@ abstract class CControllerBGHost extends CController {
 			]);
 
 			$items_tag_by_host = $items_by_hosts[0]["tags"];
+			print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
 			if (!$host['inheritedTags']) {
@@ -403,7 +404,6 @@ abstract class CControllerBGHost extends CController {
 			foreach ($items_tag_by_host as $item_tag) {
 				array_push($tags, $item_tag);
 			}
-
 
 			$host['tags'] = $tags;
 
