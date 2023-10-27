@@ -396,12 +396,12 @@ abstract class CControllerBGHost extends CController {
 				}
 			}
 
-			# merge items tags with hosts tags
-			foreach ($items_tags as $item_tag) {
-				foreach ($item_tag as $it) {
-					array_push($tags, $it);
-				}
-			}
+			// # merge items tags with hosts tags
+			// foreach ($items_tags as $item_tag) {
+			// 	foreach ($item_tag as $it) {
+			// 		array_push($tags, $it);
+			// 	}
+			// }
 
 			$host['tags'] = $tags;
 		}
@@ -418,12 +418,19 @@ abstract class CControllerBGHost extends CController {
 		// print_r($items_tag_by_host);
 
 		// // print_r($items_tags);
-		// foreach($hosts as &$host) {
-		// 	$hosts_tags = $host['tags'];
-		// 	print_r($hosts_tags);
-		// 	print_r('host tag');
-		// }
+		
+		foreach($hosts as &$host) {
+			$tags = $host['tags'];
+			foreach ($items_tags as $item_tag) {
+				foreach ($item_tag as $it) {
+					array_push($tags, $it);
+				}
+			}
 
+			$host['tags'] = $tags;
+		}
+
+		unset($host);
 			// 	// print_r('item tag');
 			// 	// print_r($item_tag);
 			// 	// foreach ($item_tag as $it_tag) {
