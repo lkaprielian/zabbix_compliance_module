@@ -124,47 +124,52 @@ abstract class CControllerBGHost extends CController {
 
 		# get items by tag 
 		$items = API::Item()->get([
-			'output' => ["itemid"],
+			'output' => ['itemid'],
 			"with_triggers" => true,
 			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
 
-		# get hosts by itemids
+			
+		$items_ids = [];
 		$hosts = [];
-		foreach ($items as $item) {
-			$hosts_by_items = API::Host()->get([
-				'output' => ['hostid', 'name', 'status'],
-				'evaltype' => $filter['evaltype'],
-				'tags' => $filter['tags'],
-				'inheritedTags' => true,
-				'groupids' => $groupids,
-				'severities' => $filter['severities'] ? $filter['severities'] : null,
-				'withProblemsSuppressed' => $filter['severities']
-					? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
-					: null,
-				'search' => [
-					'name' => ($filter['name'] === '') ? null : $filter['name'],
-					'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
-					'dns' => ($filter['dns'] === '') ? null : $filter['dns']
-				],
-				'filter' => [
-					'status' => ($filter['status'] == -1) ? null : $filter['status'],
-					'port' => ($filter['port'] === '') ? null : $filter['port'],
-					'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
-						? null
-						: HOST_MAINTENANCE_STATUS_OFF
-				],
-				'selectHostGroups' => ['groupid', 'name'],
-				'sortfield' => 'name',
-				'limit' => $limit,
-				'preservekeys' => true,
-				'itemids' => [
-					$item['itemid']
-				]
-			]);
 
-			$hosts = $hosts + $hosts_by_items;
+		foreach ($items as $item) {
+			$items_ids[] = $item['itemid'];
 		}
+
+		# get hosts by itemids
+		// foreach ($items as $item) {
+		$hosts_by_items = API::Host()->get([
+			'output' => ['hostid', 'name', 'status'],
+			'evaltype' => $filter['evaltype'],
+			'tags' => $filter['tags'],
+			'inheritedTags' => true,
+			'groupids' => $groupids,
+			'severities' => $filter['severities'] ? $filter['severities'] : null,
+			'withProblemsSuppressed' => $filter['severities']
+				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
+				: null,
+			'search' => [
+				'name' => ($filter['name'] === '') ? null : $filter['name'],
+				'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
+				'dns' => ($filter['dns'] === '') ? null : $filter['dns']
+			],
+			'filter' => [
+				'status' => ($filter['status'] == -1) ? null : $filter['status'],
+				'port' => ($filter['port'] === '') ? null : $filter['port'],
+				'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
+					? null
+					: HOST_MAINTENANCE_STATUS_OFF
+			],
+			'selectHostGroups' => ['groupid', 'name'],
+			'sortfield' => 'name',
+			'limit' => $limit,
+			'preservekeys' => true,
+			'itemids' => $items_ids
+		]);
+
+		$hosts = $hosts + $hosts_by_items;
+		// }
 
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
@@ -371,11 +376,10 @@ abstract class CControllerBGHost extends CController {
 				'output' => ['tags'],
 				'selectTags'  => ['tag', 'value']
 				,
-				"hostids"  => $host["hostid"],
-				'inherited' => true
+				"hostids"  => $host["hostid"]
 			]);
 
-			$items_tag_by_host = $items_tag_by_host + $items_by_hosts[0]['tags'];
+			$items_tag_by_host = $items_by_hosts[0]['tags'];
 			// print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
