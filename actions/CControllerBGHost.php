@@ -374,7 +374,7 @@ abstract class CControllerBGHost extends CController {
 				"hostids"  => $host["hostid"]
 			]);
 
-			$items_tag_by_host = $items_by_hosts[0]['tags'][0];
+			$items_tag_by_host = $items_by_hosts[0];
 			print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
