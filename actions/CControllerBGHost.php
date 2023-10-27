@@ -217,9 +217,9 @@ abstract class CControllerBGHost extends CController {
 		// Get additional data to limited host amount.
 		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
-			'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
-			'selectGraphs' => API_OUTPUT_COUNT,
-			'selectHttpTests' => API_OUTPUT_COUNT,
+			// 'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
+			// 'selectGraphs' => API_OUTPUT_COUNT,
+			// 'selectHttpTests' => API_OUTPUT_COUNT,
 			'selectTags' => ['tag', 'value'],
 			'selectInheritedTags' => ['tag', 'value'],
 			'hostids' => array_keys($hosts_sorted_by_group),
@@ -341,14 +341,14 @@ abstract class CControllerBGHost extends CController {
 
 			$items_tag_by_host = $items_by_hosts[0]["tags"];
 		}
-		// print_r($items_tag_by_host);
+		print_r($items_tag_by_host);
 		unset($host);
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
-			$host['dashboards'] = count(getHostDashboards($host['hostid']));
+			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
 
-			CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
+			// CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
 
 			if ($host['status'] == HOST_STATUS_MONITORED && $host['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON) {
 				$maintenanceids[$host['maintenanceid']] = true;
@@ -404,6 +404,7 @@ abstract class CControllerBGHost extends CController {
 			foreach ($items_tag_by_host as $item_tag) {
 				array_push($tags, $item_tag);
 			}
+
 
 			$host['tags'] = $tags;
 

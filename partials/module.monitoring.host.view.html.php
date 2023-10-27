@@ -69,18 +69,18 @@ function addGroupRow($data, &$rows, $group_name, $parent_group_name, $level, &$c
 		$host = $data['hosts'][$hostid];
 		$host_name = (new CLinkAction($host['name']))->setMenuPopup(CMenuPopupHelper::getHost($hostid));
 
-		$interface = null;
-		if ($host['interfaces']) {
-			foreach ($interface_types as $interface_type) {
-				$host_interfaces = array_filter($host['interfaces'], function(array $host_interface) use ($interface_type) {
-					return ($host_interface['type'] == $interface_type);
-				});
-				if ($host_interfaces) {
-					$interface = reset($host_interfaces);
-					break;
-				}
-			}
-		}
+		// $interface = null;
+		// if ($host['interfaces']) {
+		// 	foreach ($interface_types as $interface_type) {
+		// 		$host_interfaces = array_filter($host['interfaces'], function(array $host_interface) use ($interface_type) {
+		// 			return ($host_interface['type'] == $interface_type);
+		// 		});
+		// 		if ($host_interfaces) {
+		// 			$interface = reset($host_interfaces);
+		// 			break;
+		// 		}
+		// 	}
+		// }
 
 		$problems_link = new CLink('', (new CUrl('zabbix.php'))
 			->setArgument('action', 'problem.view')
