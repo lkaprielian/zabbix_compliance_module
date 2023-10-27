@@ -124,19 +124,23 @@ abstract class CControllerBGHost extends CController {
 
 		# get items by tag 
 		$items = API::Item()->get([
-			'output' => ['itemid'],
-			"with_triggers" => true,
+			'output' => ['itemid', 'tags'],
+			'selectTags' => ['tag', 'value'],
 			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
 
 			
 		$items_ids = [];
+		$items_tags = [];
 		$hosts = [];
 
 		# collect items ids in one array to do one call to get hostsby items (speed case)
 		foreach ($items as $item) {
 			$items_ids[] = $item['itemid'];
+			$items_tags[] = $item['tags'];
 		}
+
+		// print_r($items_tags);
 
 		# get hosts by itemids
 		// foreach ($items as $item) {
@@ -336,19 +340,6 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		// $items_tag_by_host = [];
-		// foreach ($hosts as &$host) {
-		// 	$items_by_hosts = API::Item()->get([
-		// 		'output' => ['tags'],
-		// 		"selectTags"  => 'extend'
-		// 		,
-		// 		"hostids"  => $host["hostid"]
-		// 	]);
-
-		// 	$items_tag_by_host = $items_by_hosts[0]["tags"];
-		// }
-		// unset($host);
-
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
 			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
@@ -404,17 +395,86 @@ abstract class CControllerBGHost extends CController {
 					$tags[] = $template_tag;
 				}
 			}
-			
 
-			// # merge items tags with hosts tags
-			// foreach ($items_tag_by_host as $item_tag) {
-			// 	array_push($tags, $item_tag);
-			// }
+			# merge items tags with hosts tags
+			foreach ($items_tags as $item_tag) {
+				foreach ($item_tag as $it) {
+					array_push($tags, $it);
+				}
+			}
 
 			$host['tags'] = $tags;
-
 		}
+
 		unset($host);
+
+		// $items_tag_by_host = [];
+		// foreach($items_tags as $item_tag) {
+		// 	print_r('item tag');
+		// 	print_r($item_tag);
+		// 	$items_tag_by_host[] = $item_tag;
+		// }
+
+		// print_r($items_tag_by_host);
+
+		// // print_r($items_tags);
+		// foreach($hosts as &$host) {
+		// 	$hosts_tags = $host['tags'];
+		// 	print_r($hosts_tags);
+		// 	print_r('host tag');
+		// }
+
+			// 	// print_r('item tag');
+			// 	// print_r($item_tag);
+			// 	// foreach ($item_tag as $it_tag) {
+			// 	// 	print_r('one_item');
+			// 	// 	print_r($it_tag);
+					
+
+			// 	// }
+			// 	$it_tags[] = $item_tag;
+
+			// // $host['tags'] = $all_tags;
+			// }
+		// }
+		// unset($host);
+
+		// print('lisa');
+		// foreach($items_tags as $item_tag) {
+		// 	foreach ($item_tag as $i_tag){
+		// 		// print_r($i_tag);
+		// 		// $hosts_t[] =  $i_tag;
+		// 		// print_r($all_tags);
+		// 		// print_r($hosts_t);
+		// 		if ($i_tag['tag'] === $host_tag['tag']
+		// 				&& $i_tag['value'] === $host_tag['value']) {
+		// 			continue 2;
+		// 		}
+		// 	}
+		// }
+
+		// print_r($items_tags);
+		// $hosts_tags = $host['tags'];
+		// foreach($host['tags'] as $host_tag) {
+		// 	foreach($items_tags as $item_tag) {
+		// 		foreach ($item_tag as $i_tag){
+		// 			// print_r($i_tag);
+		// 			// $hosts_t[] =  $i_tag;
+		// 			// print_r($all_tags);
+		// 			// print_r($hosts_t);
+		// 			if ($i_tag['tag'] === $host_tag['tag']
+		// 					&& $i_tag['value'] === $host_tag['value']) {
+		// 				continue 2;
+		// 			}
+		// 		}
+			// print_r($item_tag);
+			// $all_tags = array_push($hosts_tags, array($item_tag));
+			// print_r($all_tags);
+			// $host['tags'] = $hosts_t;
+			// $hosts_tags[] = $i_tag;
+			// }
+		// print_r($all_tags);
+		// $host['tags'] = $tagss ;
 
 		$maintenances = [];
 
