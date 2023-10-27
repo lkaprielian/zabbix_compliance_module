@@ -375,7 +375,7 @@ abstract class CControllerBGHost extends CController {
 				'inherited' => true
 			]);
 
-			$items_tag_by_host = $items_by_hosts[0]['tags'];
+			$items_tag_by_host = $items_tag_by_host + $items_by_hosts[0]['tags'];
 			print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
