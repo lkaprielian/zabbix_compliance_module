@@ -369,12 +369,12 @@ abstract class CControllerBGHost extends CController {
 			$items_tag_by_host = [];
 			$items_by_hosts = API::Item()->get([
 				'output' => ['tags'],
-				"selectTags"  => 'extend'
+				'selectTags'  => ['tag', 'value']
 				,
 				"hostids"  => $host["hostid"]
 			]);
 
-			$items_tag_by_host = $items_by_hosts[0]["tags"];
+			$items_tag_by_host = $items_by_hosts[0]['tags'][0];
 			print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
