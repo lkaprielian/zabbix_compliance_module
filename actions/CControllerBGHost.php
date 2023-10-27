@@ -330,19 +330,18 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		$items_tag_by_host = [];
-		foreach ($hosts as &$host) {
-			$items_by_hosts = API::Item()->get([
-				'output' => ['tags'],
-				"selectTags"  => 'extend'
-				,
-				"hostids"  => $host["hostid"]
-			]);
+		// $items_tag_by_host = [];
+		// foreach ($hosts as &$host) {
+		// 	$items_by_hosts = API::Item()->get([
+		// 		'output' => ['tags'],
+		// 		"selectTags"  => 'extend'
+		// 		,
+		// 		"hostids"  => $host["hostid"]
+		// 	]);
 
-			$items_tag_by_host = $items_by_hosts[0]["tags"];
-		}
-		print_r($items_tag_by_host);
-		unset($host);
+		// 	$items_tag_by_host = $items_by_hosts[0]["tags"];
+		// }
+		// unset($host);
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
@@ -366,16 +365,16 @@ abstract class CControllerBGHost extends CController {
 					: 0;
 			}
 
-			// # get hosts items tags by host ids
-			// $items_tag_by_host = [];
-			// $items_by_hosts = API::Item()->get([
-			// 	'output' => ['tags'],
-			// 	"selectTags"  => 'extend'
-			// 	,
-			// 	"hostids"  => $host["hostid"]
-			// ]);
+			# get hosts items tags by host ids
+			$items_tag_by_host = [];
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				"selectTags"  => 'extend'
+				,
+				"hostids"  => $host["hostid"]
+			]);
 
-			// $items_tag_by_host = $items_by_hosts[0]["tags"];
+			$items_tag_by_host = $items_by_hosts[0]["tags"];
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
 			if (!$host['inheritedTags']) {
