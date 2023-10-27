@@ -330,6 +330,20 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
+		$items_tag_by_host = [];
+		foreach ($hosts as &$host) {
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				"selectTags"  => 'extend'
+				,
+				"hostids"  => $host["hostid"]
+			]);
+
+			$items_tag_by_host = $items_by_hosts[0]["tags"];
+		}
+		// print_r($items_tag_by_host);
+		unset($host);
+
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
 			$host['dashboards'] = count(getHostDashboards($host['hostid']));
@@ -352,17 +366,16 @@ abstract class CControllerBGHost extends CController {
 					: 0;
 			}
 
+			// # get hosts items tags by host ids
+			// $items_tag_by_host = [];
+			// $items_by_hosts = API::Item()->get([
+			// 	'output' => ['tags'],
+			// 	"selectTags"  => 'extend'
+			// 	,
+			// 	"hostids"  => $host["hostid"]
+			// ]);
 
-			# get hosts items tags by hosts ids
-			$items_tag_by_host = [];
-			$items_by_hosts = API::Item()->get([
-				'output' => ['tags'],
-				"selectTags"  => 'extend'
-				,
-				"hostids"  => $host["hostid"]
-			]);
-
-			$items_tag_by_host = $items_by_hosts[0]["tags"];
+			// $items_tag_by_host = $items_by_hosts[0]["tags"];
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
 			if (!$host['inheritedTags']) {
@@ -386,12 +399,13 @@ abstract class CControllerBGHost extends CController {
 				}
 			}
 			
+
 			# merge items tags with hosts tags
-			$tags = array_merge($tags, $items_tag_by_host);
-			// print_r($tags);
+			foreach ($items_tag_by_host as $item_tag) {
+				array_push($tags, $item_tag);
+			}
 
 			$host['tags'] = $tags;
-
 
 		}
 		unset($host);
@@ -416,7 +430,7 @@ abstract class CControllerBGHost extends CController {
 		return [
 			'paging' => $paging,
 			'hosts' => $hosts,
-                        'host_groups' => $host_groups_to_show,
+            'host_groups' => $host_groups_to_show,
 			'maintenances' => $maintenances
 		];
 	}
