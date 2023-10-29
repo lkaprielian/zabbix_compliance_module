@@ -443,12 +443,12 @@ abstract class CControllerBGHost extends CController {
 		]);
 		print_r($items_by_hosts);
 
-			// foreach ($items_by_hosts as $item_elements) {
-			// 	foreach ($item_elements['tags'] as $item_element) {
-			// 		$items_tag_by_host[] = $item_element;
-			// 		print_r($items_tag_by_host);
-			// 	}
-			// }
+		foreach ($items_by_hosts as $item_elements) {
+			foreach ($item_elements['tags'] as $item_element) {
+				$items_tag_by_host = $item_element;
+				print_r($items_tag_by_host);
+			}
+		}
 
 			// $items_tag_by_host[] = $items_by_hosts[0]['tags'];
 			// print_r($items_by_hosts);
