@@ -449,8 +449,9 @@ abstract class CControllerBGHost extends CController {
 				// print_r($items_tag_by_host);
 			}
 		}
-		array_unique($items_tag_by_host);
-		print_r($items_tag_by_host);
+		
+		$it[] = array_unique($items_tag_by_host);
+		print_r($it);
 
 		// print_r($items_tag_by_host);
 
