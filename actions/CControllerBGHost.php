@@ -42,7 +42,7 @@ abstract class CControllerBGHost extends CController {
 		'port' => '',
 		'status' => -1,
 		'evaltype' => TAG_EVAL_TYPE_AND_OR,
-		'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']],
+		'tags' => [],
 		'severities' => [],
 		'show_suppressed' => ZBX_PROBLEM_SUPPRESSED_FALSE,
 		'maintenance_status' => HOST_MAINTENANCE_STATUS_ON,
@@ -147,7 +147,7 @@ abstract class CControllerBGHost extends CController {
 		$hosts_by_items = API::Host()->get([
 			'output' => ['hostid', 'name', 'status'],
 			'evaltype' => $filter['evaltype'],
-			'tags' => $filter['tags'],
+			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']],
 			'inheritedTags' => true,
 			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
