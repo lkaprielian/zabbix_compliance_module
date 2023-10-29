@@ -294,7 +294,6 @@ abstract class CControllerBGHost extends CController {
 			'skipDependent' => true,
 			'monitored' => true,
 			'preservekeys' => true,
-			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
 
 		$problems = API::Problem()->get([
