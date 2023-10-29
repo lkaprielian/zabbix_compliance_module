@@ -293,7 +293,8 @@ abstract class CControllerBGHost extends CController {
 			'hostids' => $all_hosts_in_groups_to_show,
 			'skipDependent' => true,
 			'monitored' => true,
-			'preservekeys' => true
+			'preservekeys' => true,
+			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
 
 		$problems = API::Problem()->get([
