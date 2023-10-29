@@ -440,7 +440,7 @@ abstract class CControllerBGHost extends CController {
 				"hostids"  => $host["hostid"]
 			]);
 
-			$items_tag_by_host = $items_by_hosts[0]['tags'];
+			$items_tag_by_host = $items_by_hosts['tags'];
 			print_r($items_tag_by_host);
 
 			# merge items tags with hosts tags
