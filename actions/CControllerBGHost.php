@@ -42,7 +42,7 @@ abstract class CControllerBGHost extends CController {
 		'port' => '',
 		'status' => -1,
 		'evaltype' => TAG_EVAL_TYPE_AND_OR,
-		'tags' => [],
+		'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']],
 		'severities' => [],
 		'show_suppressed' => ZBX_PROBLEM_SUPPRESSED_FALSE,
 		'maintenance_status' => HOST_MAINTENANCE_STATUS_ON,
