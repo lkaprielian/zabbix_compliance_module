@@ -357,9 +357,9 @@ abstract class CControllerBGHost extends CController {
 
 			// Count the number of problems (as value) per severity (as key).
 			for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
-				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']])
+				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']]) 
 					? count($host_problems[$host['hostid']][$severity])
-					: 0;
+					: 1;
 			}
 
 			# get hosts items tags by host ids
