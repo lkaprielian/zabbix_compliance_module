@@ -453,7 +453,7 @@ abstract class CControllerBGHost extends CController {
 			foreach ($items_tag_by_host as $item_tag) {
 				foreach ($host_tags as $host_tag) {
 					// Skip tags with same name and value.
-					if ($host_tags['tag'] === $item_tag['tag']
+					if ($host_tag['tag'] === $item_tag['tag']
 							&& $host_tag['value'] === $item_tag['value']) {
 						continue 2;
 					}
