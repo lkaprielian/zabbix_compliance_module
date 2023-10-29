@@ -137,7 +137,7 @@ abstract class CControllerBGHost extends CController {
 		# collect items ids in one array to do one call to get hostsby items (speed case)
 		foreach ($items as $item) {
 			$items_ids[] = $item['itemid'];
-			// $items_tags[] = $item['tags'];
+			$items_tags[] = $item['tags'];
 		}
 
 		// print_r($items_tags);
@@ -417,41 +417,19 @@ abstract class CControllerBGHost extends CController {
 
 		// print_r($items_tag_by_host);
 
-		// print_r($items_tags);
+		print_r($items_tags);
 		
-		// foreach($hosts as &$host) {
-		// 	$tags = $host['tags'];
-		// 	foreach ($items_tags as $item_tag) {
-		// 		foreach ($item_tag as $it) {
-		// 			array_push($tags,  $it);
-		// 			}
-		// 		$host['tags'] = $tags;
-		// 	}
-		// }
-
 		foreach($hosts as &$host) {
-			# get hosts items tags by host 
 			$tags = $host['tags'];
-			$items_tag_by_host = [];
-
-			$items_by_hosts = API::Item()->get([
-				'output' => ['tags'],
-				'selectTags'  => ['tag', 'value'],
-				"hostids"  => $host["hostid"]
-			]);
-
-			$items_tag_by_host = $items_by_hosts[0]['tags'];
-
-			# merge items tags with hosts tags
-			foreach ($items_tag_by_host as $item_tag) {
-					$tags[] = $tags + $item_tag;
+			foreach ($items_tags as $item_tag) {
+				foreach ($item_tag as $it) {
+					array_push($tags,  $it);
+					}
+				$host['tags'] = $tags;
 			}
-
-			$host['tags'] = $tags;
 		}
 
-			// print_r($items_tag_by_host);
-		unset($host);
+		// unset($host);
 			// 	// print_r('item tag');
 			// 	// print_r($item_tag);
 			// 	// foreach ($item_tag as $it_tag) {
