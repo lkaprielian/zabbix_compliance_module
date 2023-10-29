@@ -444,7 +444,7 @@ abstract class CControllerBGHost extends CController {
 
 			# merge items tags with hosts tags
 			foreach ($items_tag_by_host as $item_tag) {
-					$tags[] = $tags + $item_tag;
+					$tags[] = array_merge($tags, $item_tag);
 			}
 
 			$host['tags'] = $tags;
