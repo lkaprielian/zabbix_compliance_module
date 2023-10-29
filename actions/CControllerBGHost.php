@@ -441,11 +441,11 @@ abstract class CControllerBGHost extends CController {
 			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 			
 		]);
-		print_r($items_by_hosts);
+		// print_r($items_by_hosts);
 
 		foreach ($items_by_hosts as $item_elements) {
 			foreach ($item_elements['tags'] as $item_element) {
-				$items_tag_by_host = $item_element;
+				$items_tag_by_host = $item_element;	
 				print_r($items_tag_by_host);
 			}
 		}
