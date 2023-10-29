@@ -429,31 +429,32 @@ abstract class CControllerBGHost extends CController {
 		// 	}
 		// }
 		// $host["hostid"]
-		// foreach($hosts as &$host) {
+		foreach($hosts as &$host) {
 			# get hosts items tags by host 
-			// $tags = $host['tags'];
-		$items_tag_by_host = [];
+			$tags = $host['tags'];
+			$items_tag_by_host = [];
 
-		$items_by_hosts = API::Item()->get([
-			'output' => ['tags'],
-			'selectTags'  => ['tag', 'value'],
-			"hostids"  => "10605",
-			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
-			
-		]);
-		// print_r($items_by_hosts);
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				'selectTags'  => ['tag', 'value'],
+				"hostids"  => "10605",
+				'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+				
+			]);
+			// print_r($items_by_hosts);
 
-		foreach ($items_by_hosts as $item_elements) {
-			foreach ($item_elements['tags'] as $item_element) {
-				$items_tag_by_host[] = $item_element;	
-				// print_r($items_tag_by_host);
+			foreach ($items_by_hosts as $item_elements) {
+				foreach ($item_elements['tags'] as $item_element) {
+					$items_tag_by_host[] = $item_element;	
+					// print_r($items_tag_by_host);
+				}
 			}
-		}
-		
-		$it[] = array_unique(array($items_tag_by_host));
-		print_r($it);
 
-		// print_r($items_tag_by_host);
+			$host['tags'] = $items_tag_by_host;
+		}
+		// $it[] = array_unique(array($items_tag_by_host));
+		// print_r($it);
+
 
 
 			// $items_tag_by_host[] = $items_by_hosts[0]['tags'];
