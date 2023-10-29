@@ -428,7 +428,7 @@ abstract class CControllerBGHost extends CController {
 		// 		$host['tags'] = $tags;
 		// 	}
 		// }
-
+		// $host["hostid"]
 		foreach($hosts as &$host) {
 			# get hosts items tags by host 
 			$tags = $host['tags'];
@@ -437,7 +437,7 @@ abstract class CControllerBGHost extends CController {
 			$items_by_hosts = API::Item()->get([
 				'output' => ['tags'],
 				'selectTags'  => ['tag', 'value'],
-				"hostids"  => $host["hostid"],
+				"hostids"  => "10605",
 				'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 				
 			]);
