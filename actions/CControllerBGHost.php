@@ -440,15 +440,16 @@ abstract class CControllerBGHost extends CController {
 				"hostids"  => $host["hostid"]
 			]);
 
-			$items_tag_by_host = $items_by_hosts['tags'];
-			print_r($items_tag_by_host);
+			$items_tag_by_host = $items_by_hosts[0];
+			// foreach ($items_tag_by_host as $item) {
+			// 	print_r($item);
+			// }
+			// # merge items tags with hosts tags
+			// foreach ($items_tag_by_host as $item_tag) {
+			// 		$tags[] = array_merge($tags, $item_tag);
+			// }
 
-			# merge items tags with hosts tags
-			foreach ($items_tag_by_host as $item_tag) {
-					$tags[] = array_merge($tags, $item_tag);
-			}
-
-			$host['tags'] = $tags;
+			// $host['tags'] = $tags;
 		}
 
 			// print_r($items_tag_by_host);
