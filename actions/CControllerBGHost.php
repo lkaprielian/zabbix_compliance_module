@@ -431,7 +431,7 @@ abstract class CControllerBGHost extends CController {
 		// $host["hostid"]
 		foreach($hosts as &$host) {
 			# get hosts items tags by host 
-			$tags = $host['tags'];
+			$host_tags = $host['tags'];
 			$items_tag_by_host = [];
 
 			$items_by_hosts = API::Item()->get([
@@ -451,19 +451,21 @@ abstract class CControllerBGHost extends CController {
 			}
 
 			foreach ($items_tag_by_host as $item_tag) {
-				foreach ($tags as $host_tag) {
+				foreach ($tags_hosts as $host_tag) {
 					// Skip tags with same name and value.
-					if ($host_tag['tag'] === $item_tag['tag']
+					if ($host_tags['tag'] === $item_tag['tag']
 							&& $host_tag['value'] === $item_tag['value']) {
 						continue 2;
 					}
 				}
 
-				$tags[] = array_merge($tags, $item_tag);
+				$host_tags[] = array_merge($host_tags, $item_tag);
 			}
 
-			$host['tags'] = $tags;
+			$host['tags'] = $host_tags;
 		}
+		unset($host);
+
 		// $it[] = array_unique(array($items_tag_by_host));
 		// print_r($it);
 
@@ -483,7 +485,6 @@ abstract class CControllerBGHost extends CController {
 		// }
 
 			// print_r($items_tag_by_host);
-		unset($host);
 			// 	// print_r('item tag');
 			// 	// print_r($item_tag);
 			// 	// foreach ($item_tag as $it_tag) {
