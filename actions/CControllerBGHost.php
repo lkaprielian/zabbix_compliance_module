@@ -377,6 +377,13 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($host);
 
+		$tags = makeTags($hosts, true, 'hostid', ZBX_TAG_COUNT_DEFAULT, $filter['tags']);
+
+		foreach ($hosts as &$host) {
+			$host['tags'] = $tags[$host['hostid']];
+		}
+		unset($host);
+
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
@@ -438,12 +445,12 @@ abstract class CControllerBGHost extends CController {
 			]);
 		}
 
-		// $tags = makeTags($hosts, true, 'hostid', ZBX_TAG_COUNT_DEFAULT, $filter['tags']);
+		$tags = makeTags($hosts, true, 'hostid', ZBX_TAG_COUNT_DEFAULT, $filter['tags']);
 
-		// foreach ($hosts as &$host) {
-		// 	$host['tags'] = $tags[$host['hostid']];
-		// }
-		// unset($host);
+		foreach ($hosts as &$host) {
+			$host['tags'] = $tags[$host['hostid']];
+		}
+		unset($host);
 
 		return [
 			'paging' => $paging,
