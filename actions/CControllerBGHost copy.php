@@ -124,47 +124,57 @@ abstract class CControllerBGHost extends CController {
 
 		# get items by tag 
 		$items = API::Item()->get([
-			'output' => ["itemid"],
-			"with_triggers" => true,
+			'output' => ['itemid', 'tags'],
+			'selectTags' => ['tag', 'value'],
 			'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 		]);
 
-		# get hosts by itemids
+			
+		$items_ids = [];
+		$items_tags = [];
 		$hosts = [];
-		foreach ($items as $item) {
-			$hosts_by_items = API::Host()->get([
-				'output' => ['hostid', 'name', 'status'],
-				'evaltype' => $filter['evaltype'],
-				'tags' => $filter['tags'],
-				'inheritedTags' => true,
-				'groupids' => $groupids,
-				'severities' => $filter['severities'] ? $filter['severities'] : null,
-				'withProblemsSuppressed' => $filter['severities']
-					? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
-					: null,
-				'search' => [
-					'name' => ($filter['name'] === '') ? null : $filter['name'],
-					'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
-					'dns' => ($filter['dns'] === '') ? null : $filter['dns']
-				],
-				'filter' => [
-					'status' => ($filter['status'] == -1) ? null : $filter['status'],
-					'port' => ($filter['port'] === '') ? null : $filter['port'],
-					'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
-						? null
-						: HOST_MAINTENANCE_STATUS_OFF
-				],
-				'selectHostGroups' => ['groupid', 'name'],
-				'sortfield' => 'name',
-				'limit' => $limit,
-				'preservekeys' => true,
-				'itemids' => [
-					$item['itemid']
-				]
-			]);
 
-			$hosts = $hosts + $hosts_by_items;
+		# collect items ids in one array to do one call to get hostsby items (speed case)
+		foreach ($items as $item) {
+			$items_ids[] = $item['itemid'];
+			// $items_tags[] = $item['tags'];
 		}
+
+		// print_r($items_tags);
+
+		# get hosts by itemids
+		// foreach ($items as $item) {
+		$hosts_by_items = API::Host()->get([
+			'output' => ['hostid', 'name', 'status'],
+			'evaltype' => $filter['evaltype'],
+			'tags' => $filter['tags'],
+			'inheritedTags' => true,
+			'groupids' => $groupids,
+			'severities' => $filter['severities'] ? $filter['severities'] : null,
+			'withProblemsSuppressed' => $filter['severities']
+				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
+				: null,
+			'search' => [
+				'name' => ($filter['name'] === '') ? null : $filter['name'],
+				'ip' => ($filter['ip'] === '') ? null : $filter['ip'],
+				'dns' => ($filter['dns'] === '') ? null : $filter['dns']
+			],
+			'filter' => [
+				'status' => ($filter['status'] == -1) ? null : $filter['status'],
+				'port' => ($filter['port'] === '') ? null : $filter['port'],
+				'maintenance_status' => ($filter['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON)
+					? null
+					: HOST_MAINTENANCE_STATUS_OFF
+			],
+			'selectHostGroups' => ['groupid', 'name'],
+			'sortfield' => 'name',
+			'limit' => $limit,
+			'preservekeys' => true,
+			'itemids' => $items_ids
+		]);
+
+		$hosts = $hosts + $hosts_by_items;
+		// }
 
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
@@ -183,7 +193,7 @@ abstract class CControllerBGHost extends CController {
 						'parent_group_name' => '',
 						'num_of_hosts' => 1,
 						'problem_count' => [],
-						'is_collapsed' => false
+						'is_collapsed' => true
 					];
 					for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
 						$host_groups[$groupname_full]['problem_count'][$severity] = 0;
@@ -283,7 +293,7 @@ abstract class CControllerBGHost extends CController {
 			'hostids' => $all_hosts_in_groups_to_show,
 			'skipDependent' => true,
 			'monitored' => true,
-			'preservekeys' => true
+			'preservekeys' => true,
 		]);
 
 		$problems = API::Problem()->get([
@@ -330,18 +340,43 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		// $items_tag_by_host = [];
-		// foreach ($hosts as &$host) {
-		// 	$items_by_hosts = API::Item()->get([
-		// 		'output' => ['tags'],
-		// 		"selectTags"  => 'extend'
-		// 		,
-		// 		"hostids"  => $host["hostid"]
-		// 	]);
+		foreach($hosts as &$host) {
+			# get hosts items tags by host 
+			$host_tags = $host['tags'];
+			$items_tag_by_host = [];
 
-		// 	$items_tag_by_host = $items_by_hosts[0]["tags"];
-		// }
-		// unset($host);
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				'selectTags'  => ['tag', 'value'],
+				'hostids'  => $host['hostid'],
+				// 'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+				
+			]);
+			// print_r($items_by_hosts);
+
+			foreach ($items_by_hosts as $item_elements) {
+				foreach ($item_elements['tags'] as $item_element) {
+					$items_tag_by_host[] = $item_element;	
+					// print_r($items_tag_by_host);
+				}
+			}
+
+			foreach ($items_tag_by_host as $item_tag) {
+				foreach ($host_tags as $host_tag) {
+					// Skip tags with same name and value.
+					if ($host_tag['tag'] === $item_tag['tag']
+							&& $host_tag['value'] === $item_tag['value']) {
+						continue 2;
+					}
+				}
+
+				$host_tags[] = array_merge($host_tags, $item_tag);
+			}
+
+			$host['tags'] = $host_tags;
+		}
+		unset($host);
+
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
@@ -360,22 +395,21 @@ abstract class CControllerBGHost extends CController {
 
 			// Count the number of problems (as value) per severity (as key).
 			for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
-				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']])
+				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']]) 
 					? count($host_problems[$host['hostid']][$severity])
 					: 0;
 			}
 
 			# get hosts items tags by host ids
-			$items_tag_by_host = [];
-			$items_by_hosts = API::Item()->get([
-				'output' => ['tags'],
-				'selectTags'  => ['tag', 'value']
-				,
-				"hostids"  => $host["hostid"],
-				'inherited' => true
-			]);
+			// $items_tag_by_host = [];
+			// $items_by_hosts = API::Item()->get([
+			// 	'output' => ['tags'],
+			// 	'selectTags'  => ['tag', 'value']
+			// 	,
+			// 	"hostids"  => $host["hostid"]
+			// ]);
 
-			$items_tag_by_host = $items_tag_by_host + $items_by_hosts[0]['tags'];
+			// $items_tag_by_host = $items_by_hosts[0]['tags'];
 			// print_r($items_tag_by_host);
 
 			// Merge host tags with template tags, and skip duplicate tags and values.
@@ -399,17 +433,147 @@ abstract class CControllerBGHost extends CController {
 					$tags[] = $template_tag;
 				}
 			}
-			
 
-			# merge items tags with hosts tags
-			foreach ($items_tag_by_host as $item_tag) {
-				array_push($tags, $item_tag);
-			}
+			// # merge items tags with hosts tags
+			// foreach ($items_tags as $item_tag) {
+			// 	foreach ($item_tag as $it) {
+			// 		array_push($tags, $it);
+			// 	}
+			// }
 
 			$host['tags'] = $tags;
-
 		}
+
 		unset($host);
+
+		// $items_tag_by_host = [];
+		// foreach($items_tags as $item_tag) {
+		// 	print_r('item tag');
+		// 	print_r($item_tag);
+		// 	$items_tag_by_host[] = $item_tag;
+		// }
+
+		// print_r($items_tag_by_host);
+
+		// print_r($items_tags);
+		
+		// foreach($hosts as &$host) {
+		// 	$tags = $host['tags'];
+		// 	foreach ($items_tags as $item_tag) {
+		// 		foreach ($item_tag as $it) {
+		// 			array_push($tags,  $it);
+		// 			}
+		// 		$host['tags'] = $tags;
+		// 	}
+		// }
+		// $host["hostid"]
+		// foreach($hosts as &$host) {
+		// 	# get hosts items tags by host 
+		// 	$host_tags = $host['tags'];
+		// 	$items_tag_by_host = [];
+
+		// 	$items_by_hosts = API::Item()->get([
+		// 		'output' => ['tags'],
+		// 		'selectTags'  => ['tag', 'value'],
+		// 		'hostids'  => $host['hostid'],
+		// 		// 'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+				
+		// 	]);
+		// 	// print_r($items_by_hosts);
+
+		// 	foreach ($items_by_hosts as $item_elements) {
+		// 		foreach ($item_elements['tags'] as $item_element) {
+		// 			$items_tag_by_host[] = $item_element;	
+		// 			// print_r($items_tag_by_host);
+		// 		}
+		// 	}
+
+		// 	foreach ($items_tag_by_host as $item_tag) {
+		// 		foreach ($host_tags as $host_tag) {
+		// 			// Skip tags with same name and value.
+		// 			if ($host_tag['tag'] === $item_tag['tag']
+		// 					&& $host_tag['value'] === $item_tag['value']) {
+		// 				continue 2;
+		// 			}
+		// 		}
+
+		// 		$host_tags[] = array_merge($host_tags, $item_tag);
+		// 	}
+
+		// 	$host['tags'] = $host_tags;
+		// }
+		// unset($host);
+
+		// $it[] = array_unique(array($items_tag_by_host));
+		// print_r($it);
+
+
+
+			// $items_tag_by_host[] = $items_by_hosts[0]['tags'];
+			// print_r($items_by_hosts);
+			// foreach ($items_tag_by_host as $item) {
+			// 	print_r($item);
+			// }	
+			// # merge items tags with hosts tags
+			// foreach ($items_tag_by_host as $item_tag) {
+			// 		$tags[] = array_merge($tags, $item_tag);
+			// }
+
+			// $host['tags'] = $tags;
+		// }
+
+			// print_r($items_tag_by_host);
+			// 	// print_r('item tag');
+			// 	// print_r($item_tag);
+			// 	// foreach ($item_tag as $it_tag) {
+			// 	// 	print_r('one_item');
+			// 	// 	print_r($it_tag);
+					
+
+			// 	// }
+			// 	$it_tags[] = $item_tag;
+
+			// // $host['tags'] = $all_tags;
+			// }
+		// }
+		// unset($host);
+
+		// print('lisa');
+		// foreach($items_tags as $item_tag) {
+		// 	foreach ($item_tag as $i_tag){
+		// 		// print_r($i_tag);
+		// 		// $hosts_t[] =  $i_tag;
+		// 		// print_r($all_tags);
+		// 		// print_r($hosts_t);
+		// 		if ($i_tag['tag'] === $host_tag['tag']
+		// 				&& $i_tag['value'] === $host_tag['value']) {
+		// 			continue 2;
+		// 		}
+		// 	}
+		// }
+
+		// print_r($items_tags);
+		// $hosts_tags = $host['tags'];
+		// foreach($host['tags'] as $host_tag) {
+		// 	foreach($items_tags as $item_tag) {
+		// 		foreach ($item_tag as $i_tag){
+		// 			// print_r($i_tag);
+		// 			// $hosts_t[] =  $i_tag;
+		// 			// print_r($all_tags);
+		// 			// print_r($hosts_t);
+		// 			if ($i_tag['tag'] === $host_tag['tag']
+		// 					&& $i_tag['value'] === $host_tag['value']) {
+		// 				continue 2;
+		// 			}
+		// 		}
+			// print_r($item_tag);
+			// $all_tags = array_push($hosts_tags, array($item_tag));
+			// print_r($all_tags);
+			// $host['tags'] = $hosts_t;
+			// $hosts_tags[] = $i_tag;
+			// }
+		// print_r($all_tags);
+		// $host['tags'] = $tagss ;
 
 		$maintenances = [];
 
@@ -522,7 +686,7 @@ abstract class CControllerBGHost extends CController {
 				'parent_group_name' => '',
 				'num_of_hosts' => 1,
 				'problem_count' => [],
-				'is_collapsed' => false
+				'is_collapsed' => true
 			];
 			for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
 				$host_groups[$parent_group_name]['problem_count'][$severity] = 0;
