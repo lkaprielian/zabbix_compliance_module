@@ -79,7 +79,7 @@ class CControllerBGHostView extends CControllerBGHost {
 				range(TRIGGER_SEVERITY_NOT_CLASSIFIED, TRIGGER_SEVERITY_COUNT - 1)
 			);
 		}
-
+ 
 		if (!$ret) {
 			$this->setResponse(new CControllerResponseFatal());
 		}
