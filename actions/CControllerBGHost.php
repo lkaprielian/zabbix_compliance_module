@@ -227,9 +227,9 @@ abstract class CControllerBGHost extends CController {
 		// Get additional data to limited host amount.
 		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
-			'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
-			'selectGraphs' => API_OUTPUT_COUNT,
-			'selectHttpTests' => API_OUTPUT_COUNT,
+			// 'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
+			// 'selectGraphs' => API_OUTPUT_COUNT,
+			// 'selectHttpTests' => API_OUTPUT_COUNT,
 			'selectTags' => ['tag', 'value'],
 			'selectInheritedTags' => ['tag', 'value'],
 			'hostids' => array_keys($hosts_sorted_by_group),
@@ -340,7 +340,95 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		foreach($hosts as &$host) {
+		// foreach($hosts as &$host) {
+		// 	# get hosts items tags by host 
+		// 	$host_tags = $host['tags'];
+		// 	$items_tag_by_host = [];
+
+		// 	$items_by_hosts = API::Item()->get([
+		// 		'output' => ['tags'],
+		// 		'selectTags'  => ['tag', 'value'],
+		// 		'hostids'  => $host['hostid'],
+		// 		// 'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+				
+		// 	]);
+		// 	// print_r($items_by_hosts);
+
+		// 	foreach ($items_by_hosts as $item_elements) {
+		// 		foreach ($item_elements['tags'] as $item_element) {
+		// 			$items_tag_by_host[] = $item_element;	
+		// 			// print_r($items_tag_by_host);
+		// 		}
+		// 	}
+
+		// 	foreach ($items_tag_by_host as $item_tag) {
+		// 		foreach ($host_tags as $host_tag) {
+		// 			// Skip tags with same name and value.
+		// 			if ($host_tag['tag'] === $item_tag['tag']
+		// 					&& $host_tag['value'] === $item_tag['value']) {
+		// 				continue 2;
+		// 			}
+		// 		}
+
+		// 		$host_tags[] = array_merge($host_tags, $item_tag);
+		// 	}
+
+		// 	$host['tags'] = $host_tags;
+		// }
+		// unset($host);
+
+
+		foreach ($hosts as &$host) {
+			// Count number of dashboards for each host.
+			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
+
+			// CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
+
+			if ($host['status'] == HOST_STATUS_MONITORED && $host['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON) {
+				$maintenanceids[$host['maintenanceid']] = true;
+			}
+
+			// Fill empty arrays for hosts without problems.
+			if (!array_key_exists($host['hostid'], $host_problems)) {
+				$host_problems[$host['hostid']] = [];
+			}
+
+			// Count the number of problems (as value) per severity (as key).
+			for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
+				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']]) 
+					? count($host_problems[$host['hostid']][$severity])
+					: 0;
+			}
+
+			// Merge host tags with template tags, and skip duplicate tags and values.
+			if (!$host['inheritedTags']) {
+				$tags = $host['tags'];
+			}
+			elseif (!$host['tags']) {
+				$tags = $host['inheritedTags'];
+			}
+			else {
+				$tags = $host['tags'];
+
+				foreach ($host['inheritedTags'] as $template_tag) {
+					foreach ($tags as $host_tag) {
+						// Skip tags with same name and value.
+						if ($host_tag['tag'] === $template_tag['tag']
+								&& $host_tag['value'] === $template_tag['value']) {
+							continue 2;
+						}
+					}
+					$tags[] = $template_tag;
+				}
+			}
+
+			// # merge items tags with hosts tags
+			// foreach ($items_tags as $item_tag) {
+			// 	foreach ($item_tag as $it) {
+			// 		array_push($tags, $it);
+			// 	}
+			// }
+
 			# get hosts items tags by host 
 			$host_tags = $host['tags'];
 			$items_tag_by_host = [];
@@ -373,75 +461,7 @@ abstract class CControllerBGHost extends CController {
 				$host_tags[] = array_merge($host_tags, $item_tag);
 			}
 
-			$host['tags'] = $host_tags;
-		}
-		unset($host);
-
-
-		foreach ($hosts as &$host) {
-			// Count number of dashboards for each host.
-			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
-
-			// CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
-
-			if ($host['status'] == HOST_STATUS_MONITORED && $host['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON) {
-				$maintenanceids[$host['maintenanceid']] = true;
-			}
-
-			// Fill empty arrays for hosts without problems.
-			if (!array_key_exists($host['hostid'], $host_problems)) {
-				$host_problems[$host['hostid']] = [];
-			}
-
-			// Count the number of problems (as value) per severity (as key).
-			for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
-				$host['problem_count'][$severity] = array_key_exists($severity, $host_problems[$host['hostid']]) 
-					? count($host_problems[$host['hostid']][$severity])
-					: 0;
-			}
-
-			# get hosts items tags by host ids
-			// $items_tag_by_host = [];
-			// $items_by_hosts = API::Item()->get([
-			// 	'output' => ['tags'],
-			// 	'selectTags'  => ['tag', 'value']
-			// 	,
-			// 	"hostids"  => $host["hostid"]
-			// ]);
-
-			// $items_tag_by_host = $items_by_hosts[0]['tags'];
-			// print_r($items_tag_by_host);
-
-			// Merge host tags with template tags, and skip duplicate tags and values.
-			if (!$host['inheritedTags']) {
-				$tags = $host['tags'];
-			}
-			elseif (!$host['tags']) {
-				$tags = $host['inheritedTags'];
-			}
-			else {
-				$tags = $host['tags'];
-
-				foreach ($host['inheritedTags'] as $template_tag) {
-					foreach ($tags as $host_tag) {
-						// Skip tags with same name and value.
-						if ($host_tag['tag'] === $template_tag['tag']
-								&& $host_tag['value'] === $template_tag['value']) {
-							continue 2;
-						}
-					}
-					$tags[] = $template_tag;
-				}
-			}
-
-			// # merge items tags with hosts tags
-			// foreach ($items_tags as $item_tag) {
-			// 	foreach ($item_tag as $it) {
-			// 		array_push($tags, $it);
-			// 	}
-			// }
-
-			$host['tags'] = $tags;
+			$host['tags'] = $tags + $host_tags ;
 		}
 
 		unset($host);
