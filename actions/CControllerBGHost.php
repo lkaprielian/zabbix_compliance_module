@@ -144,7 +144,7 @@ abstract class CControllerBGHost extends CController {
 
 		# get hosts by itemids
 		// foreach ($items as $item) {
-		$hosts_by_items = API::Host()->get([
+		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status'],
 			'evaltype' => $filter['evaltype'],
 			'tags' => $filter['tags'],
@@ -173,7 +173,7 @@ abstract class CControllerBGHost extends CController {
 			'itemids' => $items_ids
 		]);
 
-		$hosts = $hosts + $hosts_by_items;
+		// $hosts = $hosts + $hosts_by_items;
 		// }
 
 		$host_groups = []; // Information about all groups to build a tree
