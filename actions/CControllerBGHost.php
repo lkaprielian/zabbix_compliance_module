@@ -369,7 +369,7 @@ abstract class CControllerBGHost extends CController {
 					}
 				}
 
-				$host_tags[] = array_merge($host_tags, $item_tag);
+				$host_tags[] =  $item_tag;
 			}
 
 			$host['tags'] = $host_tags;
@@ -419,9 +419,11 @@ abstract class CControllerBGHost extends CController {
 					}
 					$tags[] = $template_tag;
 				}
+				
 			}
 
 			$host['tags'] = $tags;
+
 		}
 
 		unset($host);
