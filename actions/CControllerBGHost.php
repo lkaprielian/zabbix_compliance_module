@@ -226,9 +226,9 @@ abstract class CControllerBGHost extends CController {
 		// Get additional data to limited host amount.
 		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
-			'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
-			'selectGraphs' => API_OUTPUT_COUNT,
-			'selectHttpTests' => API_OUTPUT_COUNT,
+			// 'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
+			// 'selectGraphs' => API_OUTPUT_COUNT,
+			// 'selectHttpTests' => API_OUTPUT_COUNT,
 			'selectTags' => ['tag', 'value'],
 			'selectInheritedTags' => ['tag', 'value'],
 			'hostids' => array_keys($hosts_sorted_by_group),
@@ -339,49 +339,49 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		// foreach($hosts as &$host) {
-		// 	# get hosts items tags by host 
-		// 	$host_tags = $host['tags'];
-		// 	$items_tag_by_host = [];
+		foreach($hosts as &$host) {
+			# get hosts items tags by host 
+			$host_tags = $host['tags'];
+			$items_tag_by_host = [];
 
-		// 	$items_by_hosts = API::Item()->get([
-		// 		'output' => ['tags'],
-		// 		'selectTags'  => ['tag', 'value'],
-		// 		'hostids'  => $host['hostid'],
-		// 		// 'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
+			$items_by_hosts = API::Item()->get([
+				'output' => ['tags'],
+				'selectTags'  => ['tag', 'value'],
+				'hostids'  => $host['hostid'],
+				// 'tags' => [['tag' => 'application', 'operator' => TAG_OPERATOR_EQUAL, 'value' => 'compliance']]
 				
-		// 	]);
-		// 	// print_r($items_by_hosts);
+			]);
+			// print_r($items_by_hosts);
 
-		// 	foreach ($items_by_hosts as $item_elements) {
-		// 		foreach ($item_elements['tags'] as $item_element) {
-		// 			$items_tag_by_host[] = $item_element;	
-		// 			// print_r($items_tag_by_host);
-		// 		}
-		// 	}
+			foreach ($items_by_hosts as $item_elements) {
+				foreach ($item_elements['tags'] as $item_element) {
+					$items_tag_by_host[] = $item_element;	
+					// print_r($items_tag_by_host);
+				}
+			}
 
-		// 	foreach ($items_tag_by_host as $item_tag) {
-		// 		foreach ($host_tags as $host_tag) {
-		// 			// Skip tags with same name and value.
-		// 			if ($host_tag['tag'] === $item_tag['tag']
-		// 					&& $host_tag['value'] === $item_tag['value']) {
-		// 				continue 2;
-		// 			}
-		// 		}
+			foreach ($items_tag_by_host as $item_tag) {
+				foreach ($host_tags as $host_tag) {
+					// Skip tags with same name and value.
+					if ($host_tag['tag'] === $item_tag['tag']
+							&& $host_tag['value'] === $item_tag['value']) {
+						continue 2;
+					}
+				}
 
-		// 		$host_tags[] =  $item_tag;
-		// 	}
+				$host_tags[] =  $item_tag;
+			}
 
-		// 	$host['tags'] = $host_tags;
-		// }
-		// unset($host);
+			$host['tags'] = $host_tags;
+		}
+		unset($host);
 
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
-			$host['dashboards'] = count(getHostDashboards($host['hostid']));
+			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
 
-			CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
+			// CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
 
 			if ($host['status'] == HOST_STATUS_MONITORED && $host['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON) {
 				$maintenanceids[$host['maintenanceid']] = true;
