@@ -45,7 +45,7 @@ abstract class CControllerBGHost extends CController {
 		'tags' => [],
 		'severities' => [],
 		'show_suppressed' => ZBX_PROBLEM_SUPPRESSED_TRUE,
-		'maintenance_status' => HOST_MAINTENANCE_STATUS_ON,
+		'maintenance_status' => HOST_MAINTENANCE_STATUS_OFF,
 		'page' => null,
 		'sort' => 'name',
 		'sortorder' => ZBX_SORT_UP
