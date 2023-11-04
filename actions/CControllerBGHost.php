@@ -171,8 +171,8 @@ abstract class CControllerBGHost extends CController {
 			'limit' => $limit,
 			'preservekeys' => true,
 			'itemids' => $items_ids,
-			'selectTags' => ['tag', 'value'],
-			'selectInheritedTags' => ['tag', 'value']
+			// 'selectTags' => ['tag', 'value'],
+			// 'selectInheritedTags' => ['tag', 'value']
 		]);
 
 		$host_groups = []; // Information about all groups to build a tree
@@ -379,9 +379,9 @@ abstract class CControllerBGHost extends CController {
 
 		foreach ($hosts as &$host) {
 			// Count number of dashboards for each host.
-			// $host['dashboards'] = count(getHostDashboards($host['hostid']));
+			$host['dashboards'] = count(getHostDashboards($host['hostid']));
 
-			// CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
+			CArrayHelper::sort($host['interfaces'], [['field' => 'main', 'order' => ZBX_SORT_DOWN]]);
 
 			if ($host['status'] == HOST_STATUS_MONITORED && $host['maintenance_status'] == HOST_MAINTENANCE_STATUS_ON) {
 				$maintenanceids[$host['maintenanceid']] = true;
