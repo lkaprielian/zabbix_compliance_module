@@ -223,17 +223,17 @@ abstract class CControllerBGHost extends CController {
 		// Split result array and create paging.
 		$paging = CPagerHelper::paginate($filter['page'], $hosts_sorted_by_group, $filter['sortorder'], $view_curl);
 
-		// // Get additional data to limited host amount.
-		// $hosts = API::Host()->get([
-		// 	'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
-		// 	// 'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
-		// 	// 'selectGraphs' => API_OUTPUT_COUNT,
-		// 	// 'selectHttpTests' => API_OUTPUT_COUNT,
-		// 	'selectTags' => ['tag', 'value'],
-		// 	'selectInheritedTags' => ['tag', 'value'],
-		// 	'hostids' => array_keys($hosts_sorted_by_group),
-		// 	'preservekeys' => true
-		// ]);
+		// Get additional data to limited host amount.
+		$hosts = API::Host()->get([
+			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
+			'selectInterfaces' => ['ip', 'dns', 'port', 'main', 'type', 'useip', 'available', 'error', 'details'],
+			'selectGraphs' => API_OUTPUT_COUNT,
+			'selectHttpTests' => API_OUTPUT_COUNT,
+			'selectTags' => ['tag', 'value'],
+			'selectInheritedTags' => ['tag', 'value'],
+			'hostids' => array_keys($hosts_sorted_by_group),
+			'preservekeys' => true
+		]);
 
 		// Get only those groups that need to be shown
 		$host_groups_to_show = [];
