@@ -33,7 +33,7 @@ $table->setHeader([
 	(new CColHeader(_('Tags'))),
 	// Fix: problems renamed to triggers to distinguish from the problems counter column
 	// (new CColHeader(_('Problems'))),
-	(new CColHeader(_('Compliance')))
+	(new CColHeader(_('Conformity check')))
 	// (new CColHeader(_('Compliance')))
 	// make_sorting_header(_('Status'), 'status', $data['sort'], $data['sortorder'], $view_url),
 	// (new CColHeader(_('Problems'))),
