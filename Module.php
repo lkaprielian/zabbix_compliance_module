@@ -14,13 +14,14 @@ class Module extends \Zabbix\Core\CModule {
 		// Initialize main menu (CMenu class instance).
 		APP::Component()->get('menu.main')
 			->findOrAdd(_('Tools'))
-				->getSubmenu()
-					->insertAfter('', (new \CMenuItem(_('Compliances'))))
-						->findOrAdd(_('Compliances'))
-							->getSubmenu()
-								->insertAfter('', (new \CMenuItem(_('compliance tree')))
-									->setAction('compliance.view')
-								);
+				->setIcon('icon-inventory')
+					->getSubmenu()
+						->insertAfter('', (new \CMenuItem(_('Compliances'))))
+							->findOrAdd(_('Compliances'))
+								->getSubmenu()
+									->insertAfter('', (new \CMenuItem(_('compliance tree')))
+										->setAction('compliance.view')
+									);
 
 		}
 
