@@ -13,9 +13,9 @@ class Module extends \Zabbix\Core\CModule {
 	public function init(): void {
 		// Initialize main menu (CMenu class instance).
 		APP::Component()->get('menu.main')
-			->findOrAdd(_('Monitoring'))
+			->findOrAdd(_('Tools'))
 				->getSubmenu()
-					->insertAfter('Discovery', (new \CMenuItem(_('Compliances'))))
+					->insertAfter('', (new \CMenuItem(_('Compliances'))))
 						->findOrAdd(_('Compliances'))
 							->getSubmenu()
 								->insertAfter('', (new \CMenuItem(_('compliance tree')))
