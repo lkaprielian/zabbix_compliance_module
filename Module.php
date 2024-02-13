@@ -16,10 +16,10 @@ class Module extends \Zabbix\Core\CModule {
 			->findOrAdd(_('Tools'))
 				->setIcon('icon-inventory')
 					->getSubmenu()
-						->insertAfter('', (new \CMenuItem(_('Compliances'))))
-							->findOrAdd(_('Compliances'))
+						->insertAfter('', (new \CMenuItem(_('Compliance'))))
+							->findOrAdd(_('Compliance'))
 								->getSubmenu()
-									->insertAfter('', (new \CMenuItem(_('compliance tree')))
+									->insertAfter('', (new \CMenuItem(_('Compliance tree')))
 										->setAction('compliance.view')
 									);
 
