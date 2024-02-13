@@ -5,7 +5,7 @@
     "version": "1.0",
     "namespace": "Compliance",
     "author": "Leroy Merlin Connectivity",
-    "description": "Show Compliances/compliance as a tree under Monitoring",
+    "description": "Show Compliance/Compliance as a tree",
     "actions": {
         "compliance.view": {
             "class": "CControllerBGHostView",
