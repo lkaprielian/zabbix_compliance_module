@@ -69,7 +69,7 @@ abstract class CControllerBGHost extends CController {
 	 * @return int
 	 */
 	protected function getCount(array $filter): int {
-		// $groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		$groupids = $filter['groupids'] ? getGroups($filter['groupids']) : null;
 
 		// $subgroup = getSubGroups($filter['groupids']);
 		// if (empty($subgroup)){
@@ -83,7 +83,7 @@ abstract class CControllerBGHost extends CController {
 			'evaltype' => $filter['evaltype'],
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
-			'groupids' => $filter['groupids'],
+			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
 				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
@@ -127,7 +127,7 @@ abstract class CControllerBGHost extends CController {
 	 */
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
-		// $groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
+		$groupids = $filter['groupids'] ? getGroups($filter['groupids']): null;
 
 		// $subgroup = getSubGroups($filter['groupids']);
 		// if (empty($subgroup)){
@@ -163,7 +163,7 @@ abstract class CControllerBGHost extends CController {
 			'evaltype' => $filter['evaltype'],
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
-			'groupids' => $filter['groupids'],
+			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
 				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
