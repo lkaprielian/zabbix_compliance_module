@@ -133,7 +133,6 @@ abstract class CControllerBGHost extends CController {
 		} else {
 			$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
 		}
-		print_r($groupids);
 
 		# get items by tag 
 		$items = API::Item()->get([
