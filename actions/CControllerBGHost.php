@@ -132,7 +132,9 @@ abstract class CControllerBGHost extends CController {
 
 		$subgroup = getSubGroups($filter['groupids']);
 		print_r($subgroup);
-
+		if ($subgroup){
+			print("not empty");
+		}
 		// if (empty($subgroup)){
 		// 	$groupids = $filter['groupids'] ? $filter['groupids'] : null;
 		// } else {
