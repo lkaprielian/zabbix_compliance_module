@@ -186,7 +186,7 @@ abstract class CControllerBGHost extends CController {
 					? null
 					: HOST_MAINTENANCE_STATUS_OFF
 			],
-			'selectHostGroups' => ['groupid', 'name'],
+			// 'selectHostGroups' => ['groupid', 'name'],
 			'sortfield' => 'name',
 			'limit' => $limit,
 			'preservekeys' => true,
