@@ -263,8 +263,8 @@ abstract class CControllerBGHost extends CController {
 		foreach ($hosts_sorted_by_group as $host) {
 			foreach ($host['hostgroups'] as $group) {
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
-					if ($group['$groupid'] == $filter['$groupids']){
-						
+					if ($group['groupid'] == $filter['groupids']){
+					
 						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
 						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
 						// Make sure parent group exists as well
