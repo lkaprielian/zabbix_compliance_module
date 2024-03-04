@@ -237,7 +237,7 @@ abstract class CControllerBGHost extends CController {
 		// Split result array and create paging.
 		$paging = CPagerHelper::paginate($filter['page'], $hosts_sorted_by_group, $filter['sortorder'], $view_curl);
 
-		print_r($hosts_sorted_by_group);
+		// print_r($hosts_sorted_by_group);
 		// Get additional data to limited host amount.
 		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
