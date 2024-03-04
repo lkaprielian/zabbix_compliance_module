@@ -69,7 +69,7 @@ abstract class CControllerBGHost extends CController {
 	 * @return int
 	 */
 	protected function getCount(array $filter): int {
-		$groupids = $filter['groupids'] ? $filter['groupids'] : null;
+		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
 		// $subgroup = getSubGroups($filter['groupids']);
 		// if (empty($subgroup)){
 		// 	$groupids = $filter['groupids'] ? $filter['groupids'] : null;
@@ -126,7 +126,7 @@ abstract class CControllerBGHost extends CController {
 	 */
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
-		$groupids = $filter['groupids'] ? $filter['groupids'] : null;
+		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
 
 		// $subgroup = getSubGroups($filter['groupids']);
 		// if (empty($subgroup)){
