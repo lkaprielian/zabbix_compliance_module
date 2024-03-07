@@ -209,7 +209,7 @@ abstract class CControllerBGHost extends CController {
 				$groupid = $group['groupid'];
 				$groupname_full = $group['name'];
 				if (str_contains($groupname_full, '/')) {
-					print($groupname_full);
+					print_r($groupname_full);
 				}
 			// unset($tthosts[0]);
 			// print_r($tthosts );
