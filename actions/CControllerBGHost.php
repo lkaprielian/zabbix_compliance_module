@@ -299,12 +299,12 @@ abstract class CControllerBGHost extends CController {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 
-				// print_r($host_groups_to_show);
-				foreach ($host_groups_to_show as $show) {
-					if ($show['parent_group_name']) {
-						print_r($show);
-					}
-				}
+				// // print_r($host_groups_to_show);
+				// foreach ($host_groups_to_show as $show) {
+				// 	if ($show['parent_group_name']) {
+				// 		print_r($show);
+				// 	}
+				// }
 
 				// }
 			}
@@ -317,10 +317,18 @@ abstract class CControllerBGHost extends CController {
 					$groups_to_delete[] = $child_group_name;
 				}
 			}
+			foreach ($group['parent_group_name'] as $parent_group_name) {
+				if (!array_key_exists($parent_group_name, $host_groups_to_show)) {
+					$groups_to_delete[] = $parent_group_name;
+				}
+			}
 			foreach ($groups_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['children'])) !== false) {
 				    unset($group['children'][$key]);
 				}
+				if (($key = array_search($group_name, $group['parent_group_name'])) !== false) {
+				    unset($group['parent_group_name'][$key]);
+				}		
 			}
 		}
 		unset($group);
