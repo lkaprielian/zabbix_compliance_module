@@ -281,23 +281,24 @@ abstract class CControllerBGHost extends CController {
 		$host_groups_to_show = [];
 		foreach ($hosts_sorted_by_group as $host) {
 			foreach ($host['hostgroups'] as $group) {
-				if (str_contains($group['name'], '/')) {
-					if (!array_key_exists($group['name'], $host_groups_to_show)) {					
-						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
-						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
-						// Make sure parent group exists as well
-						$grp_arr = explode('/', $group['name']);
-						for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
-							if (!array_key_exists($g_name, $host_groups_to_show)) {
-								$host_groups_to_show[$g_name] = $host_groups[$g_name];
-								$host_groups_to_show[$g_name]['hosts'] = [];
-							}
-							$g_name = $g_name.'/'.$grp_arr[$i];
+				// if (str_contains($group['name'], '/')) {
+				if (!array_key_exists($group['name'], $host_groups_to_show)) {					
+					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
+					$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
+					// Make sure parent group exists as well
+					$grp_arr = explode('/', $group['name']);
+					print_r($grp_arr);
+					for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
+						if (!array_key_exists($g_name, $host_groups_to_show)) {
+							$host_groups_to_show[$g_name] = $host_groups[$g_name];
+							$host_groups_to_show[$g_name]['hosts'] = [];
 						}
-					} else {
-						$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
+						$g_name = $g_name.'/'.$grp_arr[$i];
 					}
+				} else {
+					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
+				// }
 			}
 		}
 		// Remove groups that are not to be shown from 'children' groups list
