@@ -264,13 +264,13 @@ abstract class CControllerBGHost extends CController {
 			foreach ($host['hostgroups'] as $group) {
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {					
 					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
-					// $host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
+					$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
 					// Make sure parent group exists as well
 					$grp_arr = explode('/', $group['name']);
 					for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
 						if (!array_key_exists($g_name, $host_groups_to_show)) {
 							$host_groups_to_show[$g_name] = $host_groups[$g_name];
-							// $host_groups_to_show[$g_name]['hosts'] = [];
+							$host_groups_to_show[$g_name]['hosts'] = [];
 						}
 						$g_name = $g_name.'/'.$grp_arr[$i];
 					}
@@ -279,6 +279,7 @@ abstract class CControllerBGHost extends CController {
 				}
 			}
 		}
+		print_r($host_groups_to_show);
 		// Remove groups that are not to be shown from 'children' groups list
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
