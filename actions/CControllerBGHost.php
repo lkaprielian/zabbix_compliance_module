@@ -204,7 +204,9 @@ abstract class CControllerBGHost extends CController {
 
 		// print_r($hosts);
 		foreach ($hosts as &$host){
-			print_r($host['hostgroups']);
+			$tthosts = $host['hostgroups'];
+			unset($tthosts[0]);
+			print_r($tthosts );
 		}
 		foreach ($hosts as &$host) {
 			foreach ($host['hostgroups'] as $group) {
