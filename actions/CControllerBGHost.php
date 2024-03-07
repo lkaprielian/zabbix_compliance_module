@@ -204,11 +204,16 @@ abstract class CControllerBGHost extends CController {
 		$fake_group_id = 100000;
 
 		// print_r($hosts);
-		// foreach ($hosts as &$host){
-		// 	$tthosts = $host['hostgroups'];
-		// 	unset($tthosts[0]);
-		// 	print_r($tthosts );
-		// }
+		foreach ($hosts as &$host){
+			foreach ($host['hostgroups'] as $group) {
+				$groupid = $group['groupid'];
+				$groupname_full = $group['name'];
+				if (str_contains($groupname_full, '/')) {
+					print($groupname_full);
+				}
+			// unset($tthosts[0]);
+			// print_r($tthosts );
+		}
 		foreach ($hosts as &$host) {
 			// unset($host['hostgroups'][0]);
 			foreach ($host['hostgroups'] as $group) {
