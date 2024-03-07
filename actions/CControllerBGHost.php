@@ -333,10 +333,9 @@ abstract class CControllerBGHost extends CController {
 
 		// Remove groups that are not to be shown from 'children' groups list
 		print_r($host_groups_to_show);
-		// foreach ($host_groups_to_show as $group_name) {
-		// 	foreach ($group_name as $group) {
-		// 		print_r($group);
-		// 	}
+		foreach ($host_groups_to_show as $group_name) {
+			print_r($group);
+			}
 			// $groups_to_delete = [];
 			// print_r($group_name['parent_group_name']);
 		// }
