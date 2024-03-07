@@ -317,14 +317,15 @@ abstract class CControllerBGHost extends CController {
 					$groups_to_delete[] = $child_group_name;
 				}
 			}
-
+			
+			print_r($groups_to_delete);
 			foreach ($groups_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['children'])) !== false) {
 				    unset($group['children'][$key]);
 				}
-				if (($key = array_search($group_name, $group['parent_group_name'])) !== false) {
-				    unset($group['parent_group_name'][$key]);
-				}		
+				// if (($key = array_search($group_name, $group['parent_group_name'])) !== false) {
+				//     unset($group['parent_group_name'][$key]);
+				// }		
 			}
 		}
 		unset($group);
