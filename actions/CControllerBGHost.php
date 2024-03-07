@@ -171,7 +171,7 @@ abstract class CControllerBGHost extends CController {
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
 			// 'groupids' => $filter['groupids']  ? $filter['groupids']  : null,
-			'groupids' => getSubGroups(['23']),
+			'groupids' => getSubGroups([['23']]),
 			// 'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
