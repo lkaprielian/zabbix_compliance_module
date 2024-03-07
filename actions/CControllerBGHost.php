@@ -224,11 +224,11 @@ abstract class CControllerBGHost extends CController {
 					$host_groups[$groupname_full]['num_of_hosts']++;
 				}
 
-				$grp_arr = explode('/', $groupname_full);
-				if (count($grp_arr) > 1) {
-					// Find all parent groups and create respective array elements in $host_groups
-					$this->add_parent($host_groups, $fake_group_id, $groupname_full, $filter);
-				}
+				// $grp_arr = explode('/', $groupname_full);
+				// if (count($grp_arr) > 1) {
+				// 	// Find all parent groups and create respective array elements in $host_groups
+				// 	$this->add_parent($host_groups, $fake_group_id, $groupname_full, $filter);
+				// }
 			}
 		}
 		unset($host);
@@ -279,22 +279,21 @@ abstract class CControllerBGHost extends CController {
 				}
 			}
 		}
-		// print_r($host_groups_to_show);
-		// // Remove groups that are not to be shown from 'children' groups list
-		// foreach ($host_groups_to_show as $group_name => &$group) {
-		// 	$groups_to_delete = [];
-		// 	foreach ($group['children'] as $child_group_name) {
-		// 		if (!array_key_exists($child_group_name, $host_groups_to_show)) {
-		// 			$groups_to_delete[] = $child_group_name;
-		// 		}
-		// 	}
-		// 	foreach ($groups_to_delete as $group_name) {
-		// 		if (($key = array_search($group_name, $group['children'])) !== false) {
-		// 		    unset($group['children'][$key]);
-		// 		}
-		// 	}
-		// }
-		// unset($group);
+		// Remove groups that are not to be shown from 'children' groups list
+		foreach ($host_groups_to_show as $group_name => &$group) {
+			$groups_to_delete = [];
+			foreach ($group['children'] as $child_group_name) {
+				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
+					$groups_to_delete[] = $child_group_name;
+				}
+			}
+			foreach ($groups_to_delete as $group_name) {
+				if (($key = array_search($group_name, $group['children'])) !== false) {
+				    unset($group['children'][$key]);
+				}
+			}
+		}
+		unset($group);
 
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 
