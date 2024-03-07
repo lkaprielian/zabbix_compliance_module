@@ -298,23 +298,23 @@ abstract class CControllerBGHost extends CController {
 				}
 			}
 		}
-		// Remove groups that are not to be shown from 'children' groups list
-		foreach ($host_groups_to_show as $group_name => &$group) {
-			$groups_to_delete = [];
-			foreach ($group['children'] as $child_group_name) {
-				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
-					$groups_to_delete[] = $child_group_name;
-				}
-			}
-			foreach ($groups_to_delete as $group_name) {
-				if (($key = array_search($group_name, $group['children'])) !== false) {
-				    unset($group['children'][$key]);
-				}
-			}
-		}
-		unset($group);
+		// // Remove groups that are not to be shown from 'children' groups list
+		// foreach ($host_groups_to_show as $group_name => &$group) {
+		// 	$groups_to_delete = [];
+		// 	foreach ($group['children'] as $child_group_name) {
+		// 		if (!array_key_exists($child_group_name, $host_groups_to_show)) {
+		// 			$groups_to_delete[] = $child_group_name;
+		// 		}
+		// 	}
+		// 	foreach ($groups_to_delete as $group_name) {
+		// 		if (($key = array_search($group_name, $group['children'])) !== false) {
+		// 		    unset($group['children'][$key]);
+		// 		}
+		// 	}
+		// }
+		// unset($group);
 
-		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
+		// $filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 
 		// Some hosts for shown groups can be on other pages thus not in $hosts_sorted_by_group
 		// as we already applied paging. To calculate number of problems we need all hosts belonging to shown groups
