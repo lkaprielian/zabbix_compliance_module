@@ -129,7 +129,7 @@ abstract class CControllerBGHost extends CController {
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
-		print_r(getSubGroups($filter['groupids'])); 
+		print_r($filter['groupids']); 
 
 		// $subgroup = getSubGroups($filter['groupids']);
 
