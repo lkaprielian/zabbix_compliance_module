@@ -209,7 +209,7 @@ abstract class CControllerBGHost extends CController {
 		// 	print_r($tthosts );
 		// }
 		foreach ($hosts as &$host) {
-			unset($host['hostgroups'][0]);
+			// unset($host['hostgroups'][0]);
 			foreach ($host['hostgroups'] as $group) {
 				$groupid = $group['groupid'];
 				$groupname_full = $group['name'];
