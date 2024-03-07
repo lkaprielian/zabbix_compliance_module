@@ -298,7 +298,13 @@ abstract class CControllerBGHost extends CController {
 				} else {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
-				print_r($host_groups_to_show);
+
+				// print_r($host_groups_to_show);
+				foreach ($host_groups_to_show as $show) {
+					if ($show['parent_group_name']) {
+						print_r($show);
+					}
+				}
 
 				// }
 			}
