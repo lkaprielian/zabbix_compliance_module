@@ -202,7 +202,7 @@ abstract class CControllerBGHost extends CController {
 
 		foreach ($hosts as &$host) {
 			foreach ($host['hostgroups'] as $group) {
-				if ($group != 'all_ap') {
+				if ($group != "all_ap") {
 					$groupid = $group['groupid'];
 					$groupname_full = $group['name'];
 					if (!array_key_exists($groupname_full, $host_groups)) {
