@@ -291,7 +291,6 @@ abstract class CControllerBGHost extends CController {
 					for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
 						if (!array_key_exists($g_name, $host_groups_to_show)) {
 							$host_groups_to_show[$g_name] = $host_groups[$g_name];
-							print_r($host_groups_to_show[$g_name]);
 							$host_groups_to_show[$g_name]['hosts'] = [];
 						}
 						$g_name = $g_name.'/'.$grp_arr[$i];
@@ -299,6 +298,8 @@ abstract class CControllerBGHost extends CController {
 				} else {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
+				print_r($host_groups_to_show);
+
 				// }
 			}
 		}
