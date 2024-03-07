@@ -266,13 +266,13 @@ abstract class CControllerBGHost extends CController {
 					if ($group['groupid'] == $filter['groupids']){
 					
 						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
-						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
+						// $host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
 						// Make sure parent group exists as well
 						$grp_arr = explode('/', $group['name']);
 						for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
 							if (!array_key_exists($g_name, $host_groups_to_show)) {
 								$host_groups_to_show[$g_name] = $host_groups[$g_name];
-								$host_groups_to_show[$g_name]['hosts'] = [];
+								// $host_groups_to_show[$g_name]['hosts'] = [];
 							}
 							$g_name = $g_name.'/'.$grp_arr[$i];
 						}
