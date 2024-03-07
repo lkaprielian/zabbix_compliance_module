@@ -256,6 +256,7 @@ abstract class CControllerBGHost extends CController {
 			'selectTags' => ['tag', 'value'],
 			'selectInheritedTags' => ['tag', 'value'],
 			'hostids' => array_keys($hosts_sorted_by_group),
+			'groupids' => $filter['groupids'],
 			'preservekeys' => true
 		]);
 
