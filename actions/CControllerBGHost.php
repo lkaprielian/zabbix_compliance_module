@@ -129,7 +129,7 @@ abstract class CControllerBGHost extends CController {
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
-		print_r($filter['groupids']); 
+		// print_r($filter['groupids']); 
 
 		// $subgroup = getSubGroups($filter['groupids']);
 
@@ -173,7 +173,7 @@ abstract class CControllerBGHost extends CController {
 			'inheritedTags' => true,
 			// 'groupids' => $filter['groupids']  ? $filter['groupids']  : null,
 			// 'groupids' => $filter['groupids'],
-			'groupids' => $groupids,
+			'groupids' => $filter['groupids'],
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
 				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
