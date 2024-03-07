@@ -198,7 +198,10 @@ abstract class CControllerBGHost extends CController {
 			// 'selectInheritedTags' => ['tag', 'value']
 		]);
 
-		print_r($hosts);
+		// print_r($hosts);
+		foreach ($hosts as &$host){
+			print_r($host['hostgroups']);
+		}
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
 
