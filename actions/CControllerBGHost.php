@@ -171,8 +171,8 @@ abstract class CControllerBGHost extends CController {
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
 			// 'groupids' => $filter['groupids']  ? $filter['groupids']  : null,
-			'groupids' => $filter['groupids'],
-			// 'groupids' => $groupids,
+			// 'groupids' => $filter['groupids'],
+			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
 				? (($filter['show_suppressed'] == ZBX_PROBLEM_SUPPRESSED_TRUE) ? null : false)
@@ -189,7 +189,7 @@ abstract class CControllerBGHost extends CController {
 					? null
 					: HOST_MAINTENANCE_STATUS_OFF
 			],
-			'selectHostGroups' => ['groupid', 'name'],
+			// 'selectHostGroups' => ['groupid', 'name'],
 			'sortfield' => 'name',
 			'limit' => $limit,
 			'preservekeys' => true,
@@ -256,7 +256,6 @@ abstract class CControllerBGHost extends CController {
 			'selectTags' => ['tag', 'value'],
 			'selectInheritedTags' => ['tag', 'value'],
 			'hostids' => array_keys($hosts_sorted_by_group),
-			'groupids' => $filter['groupids'],
 			'preservekeys' => true
 		]);
 
