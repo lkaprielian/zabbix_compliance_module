@@ -280,10 +280,11 @@ abstract class CControllerBGHost extends CController {
 
 		// Get only those groups that need to be shown
 		$host_groups_to_show = [];
-		$all = [];
+
+		#not here
 		// print_r($hosts_sorted_by_group);
 		foreach ($hosts_sorted_by_group as $host) {
-			print_r($hosts_sorted_by_group);
+			// print_r($hosts_sorted_by_group);
 			// print_r($host['hostgroups']);
 			// foreach ($host['hostgroups'] as $group) {
 			// 	if (count($group > 1))
@@ -328,30 +329,30 @@ abstract class CControllerBGHost extends CController {
 			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
 			// 	// }
 			// }
-			$all_groups = [];
+			// $all_groups = [];
 			// print_r($host['hostgroups']);
 			// $test_value = "";
 			foreach ($host['hostgroups'] as $group) {
-				$all_groups = array_merge($all_groups, $group);
+				// $all_groups = array_merge($all_groups, $group);
 				// print($all_groups['name']);
 				// print_r($all_groups);
 				// $test_value = $group['name'];
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
 					// if (str_contains($test_value, '/'))
-					if (str_contains($group['name'], '/') && $all_groups['name'] == $group['name']) {
-						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
-						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
-						// Make sure parent group exists as well
-						$grp_arr = explode('/', $group['name']);
-						// print_r($grp_arr);
-						for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
-							if (!array_key_exists($g_name, $host_groups_to_show)) {
-								$host_groups_to_show[$g_name] = $host_groups[$g_name];
-								$host_groups_to_show[$g_name]['hosts'] = [];
-							}
-							$g_name = $g_name.'/'.$grp_arr[$i];
+					// if (str_contains($group['name'], '/') && $all_groups['name'] == $group['name']) {
+					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
+					$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
+					// Make sure parent group exists as well
+					$grp_arr = explode('/', $group['name']);
+					// print_r($grp_arr);
+					for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
+						if (!array_key_exists($g_name, $host_groups_to_show)) {
+							$host_groups_to_show[$g_name] = $host_groups[$g_name];
+							$host_groups_to_show[$g_name]['hosts'] = [];
 						}
-					}		
+						$g_name = $g_name.'/'.$grp_arr[$i];
+					}
+					// }		
 
 				} else {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
