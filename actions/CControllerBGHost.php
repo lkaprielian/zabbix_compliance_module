@@ -420,7 +420,8 @@ abstract class CControllerBGHost extends CController {
 			// 		'is_collapsed' => 1,
 			// 	],
 			// ];
-			$hosts = [];
+			$hosts_to_delete = [];
+
 			foreach ($group as $key => $grp){
 				print_r($grp);
 				// if (array_intersect($hosts, $group['hosts'])) {
@@ -436,9 +437,19 @@ abstract class CControllerBGHost extends CController {
 					$groups_to_delete[] = $child_group_name;
 				}
 			}
+			foreach ($group['hosts'] as $host_group_name) {
+				if (!array_key_exists($host_group_name, $host_groups_to_show)) {
+					$hosts_to_delete[] = $host_group_name;
+				}
+			}
 			foreach ($groups_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['children'])) !== false) {
 				    unset($group['children'][$key]);
+				}
+			}
+			foreach ($hosts_to_delete as $group_name) {
+				if (($key = array_search($group_name, $group['hosts'])) !== false  && count($group['hosts']) > 1 ) {
+				    unset($group['hosts'][$key]);
 				}
 			}
 		}
