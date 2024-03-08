@@ -297,16 +297,16 @@ abstract class CControllerBGHost extends CController {
 						if (str_contains($currentElement['name'], $nextElement['name'])) {
 							// $all = $nextElement['name'];
 							print($currentElement['name']);
-							$all = $all + $currentElement['name'];
+							$all[] = $currentElement['name'];
 						}
 						else{
 							print('no');
 						}
 						
 					}
-					print_r($all);
 
 				}
+				print_r($all);
 
 				// if ($currentElement['name'] === $nextElement['name']) {
 				// 	echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
