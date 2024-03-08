@@ -385,7 +385,7 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group); // Unset the reference to avoid potential issues
 
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 		// Remove groups that are not to be shown from 'children' groups list
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
