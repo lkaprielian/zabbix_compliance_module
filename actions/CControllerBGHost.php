@@ -423,7 +423,7 @@ abstract class CControllerBGHost extends CController {
 			$hosts_to_delete = [];
 
 			foreach ($group as $key => $grp){
-				print_r($grp);
+				// print_r($grp);
 				// if (array_intersect($hosts, $group['hosts'])) {
 				// 	unset($group[$key]);
 				// }
@@ -447,6 +447,7 @@ abstract class CControllerBGHost extends CController {
 				    unset($group['children'][$key]);
 				}
 			}
+			print_r(count($group['hosts']));
 			foreach ($hosts_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['hosts'])) !== false  && count($group['hosts']) > 1 ) {
 				    unset($group['hosts'][$key]);
