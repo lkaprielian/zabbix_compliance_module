@@ -372,7 +372,54 @@ abstract class CControllerBGHost extends CController {
 		// Remove groups that are not to be shown from 'children' groups list
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
-			print_r($group);
+			// print_r($group);
+			// [
+			// 	[
+			// 		'groupid' => 27,
+			// 		'hosts' => [10614],
+			// 		'children' => [],
+			// 		'parent_group_name' => '',
+			// 		'num_of_hosts' => 1,
+			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
+			// 		'is_collapsed' => 1,
+			// 	],
+			// 	[
+			// 		'groupid' => 29,
+			// 		'hosts' => [10614],
+			// 		'children' => [],
+			// 		'parent_group_name' => 'mag2',
+			// 		'num_of_hosts' => 1,
+			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
+			// 		'is_collapsed' => 1,
+			// 	],
+			// 	[
+			// 		'groupid' => 100000,
+			// 		'hosts' => [10616],
+			// 		'children' => ['mag2/ap', 'mag2/switches'],
+			// 		'parent_group_name' => '',
+			// 		'num_of_hosts' => 3,
+			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
+			// 		'is_collapsed' => 1,
+			// 	],
+			// 	[
+			// 		'groupid' => 30,
+			// 		'hosts' => [10618],
+			// 		'children' => [],
+			// 		'parent_group_name' => 'mag2',
+			// 		'num_of_hosts' => 1,
+			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
+			// 		'is_collapsed' => 1,
+			// 	],
+			// 	[
+			// 		'groupid' => 28,
+			// 		'hosts' => [10618],
+			// 		'children' => [],
+			// 		'parent_group_name' => '',
+			// 		'num_of_hosts' => 1,
+			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
+			// 		'is_collapsed' => 1,
+			// 	],
+			// ];
 			foreach ($group['children'] as $child_group_name) {
 				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
 					$groups_to_delete[] = $child_group_name;
