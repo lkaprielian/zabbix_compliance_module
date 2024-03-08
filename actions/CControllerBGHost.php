@@ -364,7 +364,7 @@ abstract class CControllerBGHost extends CController {
 
 
 		// Remove groups that are not to be shown from 'children' groups list
-		// print_r($host_groups_to_show);
+		print_r($host_groups_to_show);
 		// foreach ($host_groups_to_show as $group_name) {
 		// 	print_r($group_name['parent_group_name']);
 		// }
@@ -420,39 +420,31 @@ abstract class CControllerBGHost extends CController {
 			// 		'is_collapsed' => 1,
 			// 	],
 			// ];
-			$hosts_to_delete = [];
+			// $hosts_to_delete = [];
 
-			foreach ($group as $key => $grp){
-				// print_r($grp);
-				// if (array_intersect($hosts, $group['hosts'])) {
-				// 	unset($group[$key]);
-				// }
-				// else {
-				// 	$hosts = array_merge($hosts, $group['hosts']);
-				// }
-			}
+
 			// print_r($hosts);
 			foreach ($group['children'] as $child_group_name) {
 				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
 					$groups_to_delete[] = $child_group_name;
 				}
 			}
-			foreach ($group['hosts'] as $host_group_name) {
-				if (!array_key_exists($host_group_name, $host_groups_to_show)) {
-					$hosts_to_delete[] = $host_group_name;
-				}
-			}
+			// foreach ($group['hosts'] as $host_group_name) {
+			// 	if (!array_key_exists($host_group_name, $host_groups_to_show)) {
+			// 		$hosts_to_delete[] = $host_group_name;
+			// 	}
+			// }
 			foreach ($groups_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['children'])) !== false) {
 				    unset($group['children'][$key]);
 				}
 			}
-			print_r(count($group['hosts']));
-			foreach ($hosts_to_delete as $group_name) {
-				if (($key = array_search($group_name, $group['hosts'])) !== false  && count($group['hosts']) > 1 ) {
-				    unset($group['hosts'][$key]);
-				}
-			}
+			// print_r(count($group['hosts']));
+			// foreach ($hosts_to_delete as $group_name) {
+			// 	if (($key = array_search($group_name, $group['hosts'])) !== false  && count($group['hosts']) > 1 ) {
+			// 	    unset($group['hosts'][$key]);
+			// 	}
+			// }
 		}
 		unset($group);
 
