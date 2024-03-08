@@ -329,7 +329,7 @@ abstract class CControllerBGHost extends CController {
 			// }
 			$list = [];
 			foreach ($host['hostgroups'] as $group) {
-				$list1 [] = $group['name'];
+				$list [] = $group['name'];
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
 					if ($group['name'] !='ap'){
 						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
@@ -350,7 +350,7 @@ abstract class CControllerBGHost extends CController {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 			}
-			$comb = array_merge($list,$list1);
+			$comb = array_merge($list,$list);
 			print_r($comb);
 
 				// if (str_contains($group['name'], '/')) {
