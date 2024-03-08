@@ -291,6 +291,7 @@ abstract class CControllerBGHost extends CController {
 			// Compare each element with the element that follows it
 			for ($i = 0; $i < $subgroup_length - 1; $i++) {
 				$currentElement = $subgroup[$i];
+				print_r($subgroup[$i]);
 				if (!(str_contains($currentElement['name'],'/'))) {
 					// print($currentElement['name']);
 					$all1[] = $currentElement['name'];
@@ -310,7 +311,7 @@ abstract class CControllerBGHost extends CController {
 					// }
 				}
 				$all[] = $all + $all1;
-				print_r($all);
+				// print_r($all);
 
 				// if ($currentElement['name'] === $nextElement['name']) {
 				// 	echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
