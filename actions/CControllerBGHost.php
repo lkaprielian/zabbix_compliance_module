@@ -280,9 +280,14 @@ abstract class CControllerBGHost extends CController {
 
 		// Get only those groups that need to be shown
 		$host_groups_to_show = [];
+		$all = [];
 		// print_r($hosts_sorted_by_group);
 		foreach ($hosts_sorted_by_group as $host) {
 			print_r($host['hostgroups']);
+			foreach ($host['hostgroups'] as $group) {
+				print_r($group)
+			}
+				// if (!array_key_exists($group['name'], $host_groups_to_show)) {	
 			// $subgroup =  $host['hostgroups'];
 			// $subgroup_length = count($subgroup);
 			// // print($subgroup);
