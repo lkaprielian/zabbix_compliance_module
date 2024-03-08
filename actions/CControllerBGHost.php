@@ -350,7 +350,7 @@ abstract class CControllerBGHost extends CController {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 			}
-			print($list);
+			print_r($list);
 
 				// if (str_contains($group['name'], '/')) {
 		}
