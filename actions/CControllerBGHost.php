@@ -327,7 +327,7 @@ abstract class CControllerBGHost extends CController {
 			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
 			// 	// }
 			// }
-			print_r($host['hostgroups']);
+			print_r($host['hostgroups']['name']);
 			$test_value = "";
 			foreach ($host['hostgroups'] as $group) {
 				$test_value = $group['name'];
