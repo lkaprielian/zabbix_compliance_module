@@ -327,11 +327,13 @@ abstract class CControllerBGHost extends CController {
 			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
 			// 	// }
 			// }
-			
-			print_r($host['hostgroups']);
-			$test_value = "";
+			$all_groups = [];
+			// print_r($host['hostgroups']);
+			// $test_value = "";
 			foreach ($host['hostgroups'] as $group) {
-				$test_value = $group['name'];
+				$all_groups = array_merge($all_groups, $group);
+				print_r($all_groups);
+				// $test_value = $group['name'];
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
 					// if (str_contains($test_value, '/'))
 					if ($group['name'] !='ap'){
