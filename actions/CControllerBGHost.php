@@ -377,12 +377,12 @@ abstract class CControllerBGHost extends CController {
 			// Check for duplicate hosts and remove them
 			foreach ($group['hosts'] as $host) {
 				if (in_array($host, $seenHosts)) {
-					print_r($host)
+					print_r($host);
 				// 	if ($key = array_search($host, $group['hosts']) !== false &&  );
 				// 	unset($group['hosts'][$key]);
 				// } else {
 				// 	$seenHosts[] = $host;
-				// }
+				}
 			}
 		}
 		unset($group); // Unset the reference to avoid potential issues
