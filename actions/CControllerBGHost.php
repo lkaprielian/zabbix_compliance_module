@@ -309,7 +309,7 @@ abstract class CControllerBGHost extends CController {
 					// 	}
 					// }
 				}
-				$all[] = $all + $all1[];
+				$all[] = $all + $all1;
 				print_r($all);
 
 				// if ($currentElement['name'] === $nextElement['name']) {
