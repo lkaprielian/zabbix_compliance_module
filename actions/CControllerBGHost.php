@@ -285,8 +285,18 @@ abstract class CControllerBGHost extends CController {
 			// print_r($host['hostgroups']);
 			$subgroup =  $host['hostgroups'];
 			$subgroup_length = count($subgroup);
-			// print($subgroup);
+			print($subgroup);
 			print($subgroup_length);
+			// Compare each element with the element that follows it
+			for ($i = 0; $i < $subgroup_length - 1; $i++) {
+				$currentElement = $subgroup[$i];
+				$nextElement = $subgroup[$i + 1];
+				if ($currentElement['name'] === $nextElement['name']) {
+					echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
+				} else {
+					echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
+				}
+			}
 			foreach ($host['hostgroups'] as $group) {
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {					
 					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
