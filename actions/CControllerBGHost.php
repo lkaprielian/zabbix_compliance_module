@@ -333,7 +333,7 @@ abstract class CControllerBGHost extends CController {
 			foreach ($host['hostgroups'] as $group) {
 				$all_groups = array_merge($all_groups, $group);
 				foreach($all_groups as $grp){
-					print($grp['name']);
+					print_r($grp['name']);
 				}
 				// print_r($all_groups);
 				// $test_value = $group['name'];
