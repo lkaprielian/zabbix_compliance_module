@@ -420,6 +420,16 @@ abstract class CControllerBGHost extends CController {
 			// 		'is_collapsed' => 1,
 			// 	],
 			// ];
+			$hosts = [];
+			foreach ($group as $key => $grp){
+				if (array_intersect($hosts, $group['hosts'])) {
+					unset($group[$key]);
+				}
+				else {
+					$hosts = array_merge($hosts, $group['hosts']);
+				}
+			}
+			print_r($group);
 			foreach ($group['children'] as $child_group_name) {
 				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
 					$groups_to_delete[] = $child_group_name;
