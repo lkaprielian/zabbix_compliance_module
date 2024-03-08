@@ -372,20 +372,21 @@ abstract class CControllerBGHost extends CController {
 
 		foreach ($host_groups_to_show as $groupName => &$group) {
 			$group['hosts'] = array_values(array_unique($group['hosts']));
+			print_r($group['hosts']);
 		
-			// Check for duplicate hosts and remove them
-			foreach ($group['hosts'] as $host) {
-				if (in_array($host, $seenHosts)) {
-					if ($key = array_search($host, $group['hosts']) !== false && $group['parent_group_name'] == '' );
-					unset($group['hosts'][$key]);
-				} else {
-					$seenHosts[] = $host;
-				}
-			}
+			// // Check for duplicate hosts and remove them
+			// foreach ($group['hosts'] as $host) {
+			// 	if (in_array($host, $seenHosts)) {
+			// 		if ($key = array_search($host, $group['hosts']) !== false &&  );
+			// 		unset($group['hosts'][$key]);
+			// 	} else {
+			// 		$seenHosts[] = $host;
+			// 	}
+			// }
 		}
 		unset($group); // Unset the reference to avoid potential issues
 
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 		// Remove groups that are not to be shown from 'children' groups list
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
