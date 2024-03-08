@@ -292,7 +292,8 @@ abstract class CControllerBGHost extends CController {
 			for ($i = 0; $i < $subgroup_length - 1; $i++) {
 				$currentElement = $subgroup[$i];
 				if (!(str_contains($currentElement['name'],'/'))) {
-					print($currentElement['name']);
+					// print($currentElement['name']);
+					$all1[] = $currentElement['name'];
 					// for ($x = 0; $x < $subgroup_length - 1; $x++) {
 					// 	$nextElement = $subgroup[$x];
 					// 	if (str_contains($nextElement['name'],'/')){
@@ -308,6 +309,7 @@ abstract class CControllerBGHost extends CController {
 					// 	}
 					// }
 				}
+				$all[] = $all + $all1[];
 				print_r($all);
 
 				// if ($currentElement['name'] === $nextElement['name']) {
