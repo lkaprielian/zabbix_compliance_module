@@ -285,8 +285,8 @@ abstract class CControllerBGHost extends CController {
 			// print_r($host['hostgroups']);
 			$subgroup =  $host['hostgroups'];
 			$subgroup_length = count($subgroup);
-			print($subgroup);
-			print($subgroup_length);
+			// print($subgroup);
+			// print($subgroup_length);
 			$all = [];
 			// Compare each element with the element that follows it
 			for ($i = 0; $i < $subgroup_length - 1; $i++) {
