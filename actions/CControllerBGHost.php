@@ -350,8 +350,7 @@ abstract class CControllerBGHost extends CController {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 			}
-			$comb = array_merge($list,$list);
-			foreach ($comb as $co) {
+			foreach ($list as $co) {
 				print_r("test {$co}\n");
 
 			}
