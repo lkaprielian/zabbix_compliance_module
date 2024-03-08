@@ -332,12 +332,12 @@ abstract class CControllerBGHost extends CController {
 			// $test_value = "";
 			foreach ($host['hostgroups'] as $group) {
 				$all_groups = array_merge($all_groups, $group);
-				print($all_groups['name']);
+				// print($all_groups['name']);
 				// print_r($all_groups);
 				// $test_value = $group['name'];
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
 					// if (str_contains($test_value, '/'))
-					if ($group['name'] !='ap'){
+					if (str_contains($group['name'], '/') && $all_groups['name'] == $group['name']) {
 						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
 						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
 						// Make sure parent group exists as well
