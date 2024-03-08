@@ -352,7 +352,7 @@ abstract class CControllerBGHost extends CController {
 			}
 			$comb = array_merge($list,$list);
 			foreach ($comb as $co) {
-				print_r("test{$co}");
+				print_r("test {$co}\n");
 
 			}
 
