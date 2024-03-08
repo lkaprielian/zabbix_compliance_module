@@ -296,7 +296,7 @@ abstract class CControllerBGHost extends CController {
 					if (str_contains($nextElement['name'],'/')){
 						if (str_contains($currentElement['name'], $nextElement['name'])) {
 							// $all = $nextElement['name'];
-							print('yes');
+							print($currentElement['name']);
 						}
 						else{
 							print('no');
