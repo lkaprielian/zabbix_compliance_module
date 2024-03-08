@@ -291,20 +291,22 @@ abstract class CControllerBGHost extends CController {
 			// Compare each element with the element that follows it
 			for ($i = 0; $i < $subgroup_length - 1; $i++) {
 				$currentElement = $subgroup[$i];
-				for ($x = 0; $x < $subgroup_length - 1; $x++) {
-					$nextElement = $subgroup[$x];
-					if (str_contains($nextElement['name'],'/')){
-						if (str_contains($currentElement['name'], $nextElement['name'])) {
-							// $all = $nextElement['name'];
-							print($currentElement['name']);
-							$all[] = $currentElement['name'];
-						}
-						else{
-							print('no');
-						}
-						
-					}
-
+				if (!(str_contains($currentElement['name'],'/'))) {
+					print($currentElement['name']);
+					// for ($x = 0; $x < $subgroup_length - 1; $x++) {
+					// 	$nextElement = $subgroup[$x];
+					// 	if (str_contains($nextElement['name'],'/')){
+					// 		if (str_contains($currentElement['name'], $nextElement['name'])) {
+					// 			// $all = $nextElement['name'];
+					// 			print($currentElement['name']);
+					// 			$all[] = $currentElement['name'];
+					// 		}
+					// 		else{
+					// 			print('no');
+					// 		}
+							
+					// 	}
+					// }
 				}
 				print_r($all);
 
