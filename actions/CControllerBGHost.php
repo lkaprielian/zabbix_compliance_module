@@ -70,6 +70,7 @@ abstract class CControllerBGHost extends CController {
 	 */
 	protected function getCount(array $filter): int {
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		print_r($groupids);
 
 		// $subgroup = getSubGroups($filter['groupids']);
 		// if (empty($subgroup)){
@@ -303,7 +304,7 @@ abstract class CControllerBGHost extends CController {
 
 
 		// Remove groups that are not to be shown from 'children' groups list
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 		// foreach ($host_groups_to_show as $group_name) {
 		// 	print_r($group_name['parent_group_name']);
 		// }
