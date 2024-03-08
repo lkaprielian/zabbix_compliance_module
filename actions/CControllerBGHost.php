@@ -282,9 +282,9 @@ abstract class CControllerBGHost extends CController {
 		$host_groups_to_show = [];
 		// print_r($hosts_sorted_by_group);
 		foreach ($hosts_sorted_by_group as $host) {
-			foreach ($host['hostgroups'] as $group) {
-				// if (count($group) == 2) {
-					print_r($group);
+			if (count($host['hostgroups']) == 2) {
+				print_r($host['hostgroups']);
+				foreach ($host['hostgroups'] as $group) {
 					if (!array_key_exists($group['name'], $host_groups_to_show)) {					
 						$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
 						$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
@@ -301,7 +301,7 @@ abstract class CControllerBGHost extends CController {
 					} else {
 						$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 					}
-				// }
+				}
 				// if (str_contains($group['name'], '/')) {
 			}
 		}
