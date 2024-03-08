@@ -222,7 +222,7 @@ abstract class CControllerBGHost extends CController {
 				$groupid = $group['groupid'];
 				$groupname_full = $group['name'];
 				foreach ($host['hostgroups'] as $subgroup) {
-					if (str_contains($groupname_full, '/') && str_contains($groupname_full, $subgroup)) {
+					if (str_contains($groupname_full, '/') and str_contains($groupname_full, $subgroup)) {
 						// if (str_contains($groupname_full, '/')) {
 						// print_r($groupname_full);
 						if (!array_key_exists($groupname_full, $host_groups)) {
