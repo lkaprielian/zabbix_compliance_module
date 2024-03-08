@@ -221,34 +221,37 @@ abstract class CControllerBGHost extends CController {
 			foreach ($host['hostgroups'] as $group) {
 				$groupid = $group['groupid'];
 				$groupname_full = $group['name'];
-				// if (str_contains($groupname_full, '/')) {
-				print_r($groupname_full);
-				if (!array_key_exists($groupname_full, $host_groups)) {
-					$host_groups[$groupname_full] = [
-						'groupid' => $groupid,
-						'hosts' => [
-							$host['hostid']
-						],
-						'children' => [],
-						'parent_group_name' => '',
-						'num_of_hosts' => 1,
-						'problem_count' => [],
-						'is_collapsed' => true
-					];
-					for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
-						$host_groups[$groupname_full]['problem_count'][$severity] = 0;
-					}
-				} else {
-					$host_groups[$groupname_full]['hosts'][] = $host['hostid'];
-					$host_groups[$groupname_full]['num_of_hosts']++;
-				}
+				foreach ($host['hostgroups'] as $subgroup) {
+					if (str_contains($groupname_full, '/') && str_contains($groupname_full, $subgroup)) {
+						// if (str_contains($groupname_full, '/')) {
+						// print_r($groupname_full);
+						if (!array_key_exists($groupname_full, $host_groups)) {
+							$host_groups[$groupname_full] = [
+								'groupid' => $groupid,
+								'hosts' => [
+									$host['hostid']
+								],
+								'children' => [],
+								'parent_group_name' => '',
+								'num_of_hosts' => 1,
+								'problem_count' => [],
+								'is_collapsed' => true
+							];
+							for ($severity = TRIGGER_SEVERITY_COUNT - 1; $severity >= TRIGGER_SEVERITY_NOT_CLASSIFIED; $severity--) {
+								$host_groups[$groupname_full]['problem_count'][$severity] = 0;
+							}
+						} else {
+							$host_groups[$groupname_full]['hosts'][] = $host['hostid'];
+							$host_groups[$groupname_full]['num_of_hosts']++;
+						}
 
-				$grp_arr = explode('/', $groupname_full);
-				if (count($grp_arr) > 1) {
-					// Find all parent groups and create respective array elements in $host_groups
-					$this->add_parent($host_groups, $fake_group_id, $groupname_full, $filter);
+						$grp_arr = explode('/', $groupname_full);
+						if (count($grp_arr) > 1) {
+							// Find all parent groups and create respective array elements in $host_groups
+							$this->add_parent($host_groups, $fake_group_id, $groupname_full, $filter);
+						}
+					}
 				}
-				// }
 			}
 		}
 		unset($host);
