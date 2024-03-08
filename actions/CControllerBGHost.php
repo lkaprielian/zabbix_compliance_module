@@ -282,43 +282,43 @@ abstract class CControllerBGHost extends CController {
 		$host_groups_to_show = [];
 		// print_r($hosts_sorted_by_group);
 		foreach ($hosts_sorted_by_group as $host) {
-			// print_r($host['hostgroups']);
-			$subgroup =  $host['hostgroups'];
-			$subgroup_length = count($subgroup);
-			// print($subgroup);
-			// print($subgroup_length);
-			$all = [];
-			// Compare each element with the element that follows it
-			for ($i = 0; $i < $subgroup_length - 1; $i++) {
-				$currentElement = $subgroup[$i];
-				print_r($subgroup[$i]);
-				if (!(str_contains($currentElement['name'],'/'))) {
-					// print($currentElement['name']);
-					$all1[] = $currentElement['name'];
-					// for ($x = 0; $x < $subgroup_length - 1; $x++) {
-					// 	$nextElement = $subgroup[$x];
-					// 	if (str_contains($nextElement['name'],'/')){
-					// 		if (str_contains($currentElement['name'], $nextElement['name'])) {
-					// 			// $all = $nextElement['name'];
-					// 			print($currentElement['name']);
-					// 			$all[] = $currentElement['name'];
-					// 		}
-					// 		else{
-					// 			print('no');
-					// 		}
+			print_r($host['hostgroups']);
+			// $subgroup =  $host['hostgroups'];
+			// $subgroup_length = count($subgroup);
+			// // print($subgroup);
+			// // print($subgroup_length);
+			// $all = [];
+			// // Compare each element with the element that follows it
+			// for ($i = 0; $i < $subgroup_length - 1; $i++) {
+			// 	$currentElement = $subgroup[$i];
+			// 	print_r($subgroup[$i]);
+			// 	if (!(str_contains($currentElement['name'],'/'))) {
+			// 		// print($currentElement['name']);
+			// 		$all1[] = $currentElement['name'];
+			// 		// for ($x = 0; $x < $subgroup_length - 1; $x++) {
+			// 		// 	$nextElement = $subgroup[$x];
+			// 		// 	if (str_contains($nextElement['name'],'/')){
+			// 		// 		if (str_contains($currentElement['name'], $nextElement['name'])) {
+			// 		// 			// $all = $nextElement['name'];
+			// 		// 			print($currentElement['name']);
+			// 		// 			$all[] = $currentElement['name'];
+			// 		// 		}
+			// 		// 		else{
+			// 		// 			print('no');
+			// 		// 		}
 							
-					// 	}
-					// }
-				}
-				$all[] = $all + $all1;
-				// print_r($all);
+			// 		// 	}
+			// 		// }
+			// 	}
+			// 	$all[] = $all + $all1;
+			// 	// print_r($all);
 
-				// if ($currentElement['name'] === $nextElement['name']) {
-				// 	echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
-				// } else {
-				// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
-				// }
-			}
+			// 	// if ($currentElement['name'] === $nextElement['name']) {
+			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
+			// 	// } else {
+			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
+			// 	// }
+			// }
 			foreach ($host['hostgroups'] as $group) {
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {					
 					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
