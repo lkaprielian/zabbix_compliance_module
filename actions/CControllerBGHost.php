@@ -377,7 +377,9 @@ abstract class CControllerBGHost extends CController {
 		
 		// Remove groups with empty hosts array
 		foreach ($groupsToDelete as $groupName) {
-			unset($host_groups_to_show[$groupName]);
+			if ($groupName == 'ap'){
+				unset($host_groups_to_show[$groupName]);
+			}
 		}
 				
 		// print_r($host_groups_to_show);
