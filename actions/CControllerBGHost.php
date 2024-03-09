@@ -425,7 +425,7 @@ abstract class CControllerBGHost extends CController {
 			if (empty($group['parent_group_name']) && count($group['hosts']) !== count(array_unique($group['hosts']))) {
 				$groupsToDelete[] = $group_name;
 			}
-			print_r($groupsToDelete);
+			// print_r($groupsToDelete);
 			// Remove groups with duplicated hostid and empty parent_group_name
 			foreach ($groupsToDelete as $group_name) {
 				unset($host_groups_to_show[$group_name]);
