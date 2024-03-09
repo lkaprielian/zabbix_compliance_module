@@ -369,7 +369,7 @@ abstract class CControllerBGHost extends CController {
 
 		// Iterate through the array to identify groups with duplicated host IDs and empty parent_group_name
 		foreach ($host_groups_to_show as $key => $group) {
-			print_r($group);
+			print_r($host_groups_to_show[$key]);
 			// Check if host ID is already in the array and parent_group_name is empty
 			// if (in_array($group['hosts'][0], $hostIds) && $group['parent_group_name'] === '') {
 			// 	// Delete the group
