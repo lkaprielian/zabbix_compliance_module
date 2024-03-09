@@ -421,7 +421,7 @@ abstract class CControllerBGHost extends CController {
 			// print_r($hosts);
 
 			// Check if parent_group_name is empty and hosts have duplicates
-			if (empty($group['parent_group_name']) && count($group['hosts']) !== count(array_unique($group['hosts']))) {
+			if (($group['parent_group_name'])) {
 				$groupsToDelete[] = $groupName;
 			}
 			print_r($groupsToDelete);
