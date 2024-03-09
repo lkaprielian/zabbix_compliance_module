@@ -380,7 +380,7 @@ abstract class CControllerBGHost extends CController {
 			unset($host_groups_to_show[$groupName]);
 		}
 				
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 		unset($group);
 
 		// print_r($host_groups_to_show);
