@@ -383,7 +383,7 @@ abstract class CControllerBGHost extends CController {
 		}
 				
 		// print_r($host_groups_to_show);
-		unset($group);
+		// unset($group);
 
 		// print_r($host_groups_to_show);
 		// Remove groups that are not to be shown from 'children' groups list
