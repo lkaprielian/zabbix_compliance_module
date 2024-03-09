@@ -358,8 +358,6 @@ abstract class CControllerBGHost extends CController {
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 			}
-
-				// if (str_contains($group['name'], '/')) {
 		}
 
 
@@ -368,21 +366,22 @@ abstract class CControllerBGHost extends CController {
 		$seenHosts = [];
 		$groupsToDelete = [];
 		
-		foreach ($host_groups_to_show as $groupName => $group) {
-			print_r($groupName);
+		foreach ($host_groups_to_show as $groupName => $grp) {
 			// Check if parent_group_name is empty and hosts have duplicates
-			if ($group['parent_group_name'] == '' && count($group['hosts']) !== count(array_unique($group['hosts']))) {
+			if (empty($grp['parent_group_name']) && count($grp['hosts']) !== count(array_unique($grp['hosts']))) {
 				$groupsToDelete[] = $groupName;
 			}
 		}
 		
-		// Remove groups with empty hosts array
+		// Remove groups with duplicated hostid and empty parent_group_name
 		foreach ($groupsToDelete as $groupName) {
 			unset($host_groups_to_show[$groupName]);
 		}
+		
+		print_r($host_groups_to_show);
 				
 		// print_r($host_groups_to_show);
-		unset($group);
+		// unset($group);
 
 		// print_r($host_groups_to_show);
 		// Remove groups that are not to be shown from 'children' groups list
