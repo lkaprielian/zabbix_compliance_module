@@ -365,11 +365,13 @@ abstract class CControllerBGHost extends CController {
 		// Remove groups that are not to be shown from 'children' groups list
 		// print_r($host_groups_to_show);
 		
-		$seenHosts = [];
-		$groupsToDelete = [];
+		// $seenHosts = [];
+		// $groupsToDelete = [];
 
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
+			$seenHosts = [];
+			$groupsToDelete = [];
 			// Check if parent_group_name is empty and hosts have duplicates
 			$duplicateHosts = array_intersect($seenHosts, $group['hosts']);
 			print_r($duplicateHosts);
