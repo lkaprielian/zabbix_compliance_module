@@ -369,11 +369,11 @@ abstract class CControllerBGHost extends CController {
 
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
+			print(count($group['hosts']));
 			// Check if parent_group_name is empty and hosts have duplicates
 			if (empty($group['parent_group_name']) && count($group['hosts']) !== count(array_unique($group['hosts']))) {
 				$groupsToDelete[] = $group_name;
 			}
-			print_r($groupsToDelete);
 			// print_r($group);
 			// [
 			// 	[
@@ -461,7 +461,6 @@ abstract class CControllerBGHost extends CController {
 		}
 
 		// print_r($host_groups_to_show);
-
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 
 		// Some hosts for shown groups can be on other pages thus not in $hosts_sorted_by_group
