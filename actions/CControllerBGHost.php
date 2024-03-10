@@ -372,14 +372,11 @@ abstract class CControllerBGHost extends CController {
 			$groups_to_delete = [];
 
 			// Check if parent_group_name is empty and hosts have duplicates
-			$duplicateHosts = array_intersect($seenHosts, $group['hosts']);
-			print_r($duplicateHosts);
-			if (!($group['parent_group_name']) && !empty($duplicateHosts)) {
+			if (empty($group['parent_group_name']) && count($group['hosts']) !== count(array_unique($group['hosts']))) {
 				$groupsToDelete[] = $group_name;
-				// print_r($groupsToDelete);
-
 			}
-			// Add the hosts of the current group to $seenHosts
+
+			// Update the list of seen hosts
 			$seenHosts = array_merge($seenHosts, $group['hosts']);
 			// print_r($group);
 			// [
@@ -461,7 +458,9 @@ abstract class CControllerBGHost extends CController {
 			// }
 		}
 		unset($group);
-
+		// Identify duplicate hosts
+		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
+		print_r($duplicateHosts);
 		// Remove groups with duplicated hostid and empty parent_group_name
 		foreach ($groupsToDelete as $groupName) {
 			unset($host_groups_to_show[$groupName]);
