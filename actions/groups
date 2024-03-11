@@ -94,3 +94,67 @@ foreach ($host_groups_to_show as $groupName => $group) {
 foreach ($groupsToDelete as $groupName) {
     unset($host_groups_to_show[$groupName]);
 }
+
+Group 'ap':
+
+Group ID: 100000
+Hosts: Empty array
+Children: 'ap/mist'
+Parent Group Name: Empty
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'mag2/ap/mist':
+
+Group ID: 29
+Hosts: 10614
+Children: Empty array
+Parent Group Name: mag2/ap
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'mag2':
+
+Group ID: 100002
+Hosts: 10616
+Children: 'mag2/ap', 'mag2/switche'
+Parent Group Name: Empty
+Number of Hosts: 3
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'mag2/ap':
+
+Group ID: 100001
+Hosts: Empty array
+Children: 'mag2/ap/mist'
+Parent Group Name: mag2
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'mag2/switche/mist':
+
+Group ID: 30
+Hosts: 10618
+Children: Empty array
+Parent Group Name: mag2/switche
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'mag2/switche':
+
+Group ID: 100003
+Hosts: Empty array
+Children: 'mag2/switche/mist'
+Parent Group Name: mag2
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+Group 'switch':
+
+Group ID: 100004
+Hosts: Empty array
+Children: 'switch/mist'
+Parent Group Name: Empty
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
