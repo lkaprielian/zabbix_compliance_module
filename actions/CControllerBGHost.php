@@ -470,7 +470,7 @@ abstract class CControllerBGHost extends CController {
 				$groupsToDelete[] = $groupName;
 			}
 		}
-		print_r($groupsToDelete);
+		// print_r($groupsToDelete);
 		// Remove groups that meet the deletion conditions
 		foreach ($groupsToDelete as $groupName) {
 			unset($host_groups_to_show[$groupName]);
