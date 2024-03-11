@@ -45,7 +45,7 @@ $table->setHeader([
 // print_r($data['host_groups']);
 foreach ($data['host_groups'] as $group_name => $group) {
 
-	if ($group['parent_group_name'] == '') {
+	if ($group['parent_group_name'] == '' && str_contains($group['parent_group_name'],'/')) {
 		// Add only top level groups, children will be added recursively in addGroupRow()
 		$rows = [];
 		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
