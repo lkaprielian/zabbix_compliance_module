@@ -463,7 +463,7 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		print_r($groupsToDelete);
+		// print_r($groupsToDelete);
 		// Remove groups with duplicated hostid and empty parent_group_name
 		foreach ($groupsToDelete as $groupName) {
 			unset($host_groups_to_show[$groupName]);
