@@ -43,7 +43,7 @@ $table->setHeader([
 ]);
 
 foreach ($data['host_groups'] as $group_name => $group) {
-	if ($group['children'] == '') {
+	if ($group['parent_group_name'] == '') {
 		// Add only top level groups, children will be added recursively in addGroupRow()
 		$rows = [];
 		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
@@ -210,7 +210,7 @@ function addGroupRow($data, &$rows, $group_name, $parent_group_name, $level, &$c
 
 	$subgroup_rows=[];
 
-	foreach ($data['host_groups'][$group_name]['parent_group_name'] as $child_group_name) {
+	foreach ($data['host_groups'][$group_name]['children'] as $child_group_name) {
 		addGroupRow($data, $subgroup_rows, $child_group_name, $group_name, $level + 1, $my_stat);
 	}
 
