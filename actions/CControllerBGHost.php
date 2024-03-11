@@ -363,7 +363,7 @@ abstract class CControllerBGHost extends CController {
 		}
 
 		// Remove groups that are not to be shown from 'children' groups list
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 		
 		$seenHosts = [];
 
@@ -458,23 +458,23 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		// // Identify duplicate hosts
-		// $duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
+		// Identify duplicate hosts
+		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
 		// print_r($duplicateHosts);
 
-		// $groupsToDelete = [];
+		$groupsToDelete = [];
 
-		// foreach ($host_groups_to_show as $groupName => $group) {
-		// 	// Check if hosts and parent_group_name meet deletion conditions
-		// 	if (array_intersect($duplicateHosts, $group['hosts']) && empty($group['parent_group_name'])) {
-		// 		$groupsToDelete[] = $groupName;
-		// 	}
-		// }
-		// // print_r($groupsToDelete);
-		// // Remove groups that meet the deletion conditions
-		// foreach ($groupsToDelete as $groupName) {
-		// 	unset($host_groups_to_show[$groupName]);
-		// }
+		foreach ($host_groups_to_show as $groupName => $group) {
+			// Check if hosts and parent_group_name meet deletion conditions
+			if (array_intersect($duplicateHosts, $group['hosts']) && str_contains($group['parent_group_name'],'/')) {
+				$groupsToDelete[] = $groupName;
+			}
+		}
+		// print_r($groupsToDelete);
+		// Remove groups that meet the deletion conditions
+		foreach ($groupsToDelete as $groupName) {
+			unset($host_groups_to_show[$groupName]);
+		}
 		
 		// print_r($host_groups_to_show);
 
