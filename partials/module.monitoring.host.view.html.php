@@ -42,19 +42,19 @@ $table->setHeader([
 	// (new CColHeader(_('Web')))
 ]);
 
-// print_r($data['host_groups']);
-foreach ($data['host_groups'] as $group_name => $group) {
+// // print_r($data['host_groups']);
+// foreach ($data['host_groups'] as $group_name => $group) {
 
-	if ($group['parent_group_name'] == '' && str_contains($group['parent_group_name'],'/')) {
-		// Add only top level groups, children will be added recursively in addGroupRow()
-		$rows = [];
-		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
+// 	if ($group['parent_group_name'] == '' && str_contains($group['parent_group_name'],'/')) {
+// 		// Add only top level groups, children will be added recursively in addGroupRow()
+// 		$rows = [];
+// 		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
 
-		foreach ($rows as $row) {
-			$table->addRow($row);
-		}
-	}
-}
+// 		foreach ($rows as $row) {
+// 			$table->addRow($row);
+// 		}
+// 	}
+// }
 
 $form->addItem([$table,	$data['paging']]);
 
