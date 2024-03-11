@@ -210,7 +210,7 @@ function addGroupRow($data, &$rows, $group_name, $parent_group_name, $level, &$c
 
 	$subgroup_rows=[];
 
-	foreach ($data['host_groups'][$group_name]['children'] as $child_group_name) {
+	foreach ($data['host_groups'][$group_name]['parent_group_name'] as $child_group_name) {
 		addGroupRow($data, $subgroup_rows, $child_group_name, $group_name, $level + 1, $my_stat);
 	}
 
