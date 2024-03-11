@@ -460,7 +460,7 @@ abstract class CControllerBGHost extends CController {
 
 		// // Identify duplicate hosts
 		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-		print_r($duplicateHosts);
+		// print_r($duplicateHosts);
 
 		$groupsToDelete = [];
 
@@ -476,7 +476,7 @@ abstract class CControllerBGHost extends CController {
 			unset($host_groups_to_show[$groupName]);
 		}
 		
-		// print_r($host_groups_to_show);
+		print_r($host_groups_to_show);
 
 		unset($group);
 		// print_r($groupsToDelete);
