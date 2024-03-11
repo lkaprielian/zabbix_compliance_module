@@ -466,18 +466,19 @@ abstract class CControllerBGHost extends CController {
 		$groupsToDelete = [];
 
 		foreach ($host_groups_to_show as $groupName => $group) {
+			print_r(array_intersect($duplicateHosts, $group['hosts']));
 			// Check if hosts and parent_group_name meet deletion conditions
-			if (array_intersect($duplicateHosts, $group['hosts']) === $duplicateHosts && empty($group['parent_group_name'])) {
-				$groupsToDelete[] = $groupName;
-			}
+			// if (array_intersect($duplicateHosts, $group['hosts']) === $duplicateHosts && empty($group['parent_group_name'])) {
+			// 	$groupsToDelete[] = $groupName;
+			// }
 		}
-		print_r($groupsToDelete);
+		// print_r($groupsToDelete);
 		// Remove groups that meet the deletion conditions
-		foreach ($groupsToDelete as $groupName) {
-			unset($host_groups_to_show[$groupName]);
-		}
+		// foreach ($groupsToDelete as $groupName) {
+		// 	unset($host_groups_to_show[$groupName]);
+		// }
 		
-		print_r($host_groups_to_show);
+		// print_r($host_groups_to_show);
 
 		unset($group);
 		// print_r($groupsToDelete);
