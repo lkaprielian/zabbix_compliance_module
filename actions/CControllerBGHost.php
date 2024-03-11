@@ -378,6 +378,10 @@ abstract class CControllerBGHost extends CController {
 
 			// Update the list of seen hosts
 			$seenHosts = array_merge($seenHosts, $group['hosts']);
+
+			// Identify duplicate hosts
+			$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
+			print_r($duplicateHosts);
 			// print_r($group);
 			// [
 			// 	[
@@ -458,9 +462,7 @@ abstract class CControllerBGHost extends CController {
 			// }
 		}
 		unset($group);
-		// Identify duplicate hosts
-		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-		print_r($duplicateHosts);
+
 		print_r($groupsToDelete);
 		// Remove groups with duplicated hostid and empty parent_group_name
 		foreach ($groupsToDelete as $groupName) {
