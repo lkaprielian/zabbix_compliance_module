@@ -42,6 +42,7 @@ $table->setHeader([
 	// (new CColHeader(_('Web')))
 ]);
 
+print_r($data['host_groups']);
 foreach ($data['host_groups'] as $group_name => $group) {
 
 	if (str_contains($group['parent_group_name'],'/')) {
