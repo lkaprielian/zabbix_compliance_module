@@ -461,7 +461,7 @@ abstract class CControllerBGHost extends CController {
 
 		// Identify duplicate hosts
 		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-		print_r($duplicateHosts);
+		// print_r($duplicateHosts);
 
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			foreach ($duplicateHosts as $duphost) {
