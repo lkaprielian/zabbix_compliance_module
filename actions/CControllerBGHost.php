@@ -476,16 +476,10 @@ abstract class CControllerBGHost extends CController {
 			unset($host_groups_to_show[$groupName]);
 		}
 		
-		// print_r($host_groups_to_show);
+		print_r($host_groups_to_show);
 
 		unset($group);
-		// print_r($groupsToDelete);
-		// Remove groups with duplicated hostid and empty parent_group_name
-		foreach ($groupsToDelete as $groupName) {
-			unset($host_groups_to_show[$groupName]);
-		}
 
-		// print_r($host_groups_to_show);
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 
 		// Some hosts for shown groups can be on other pages thus not in $hosts_sorted_by_group
