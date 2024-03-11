@@ -42,19 +42,29 @@ $table->setHeader([
 	// (new CColHeader(_('Web')))
 ]);
 
-// // print_r($data['host_groups']);
-// foreach ($data['host_groups'] as $group_name => $group) {
+$seenHosts = [];
+foreach ($data['host_groups'] as $group_name => $group) {
+	$seenHosts = array_merge($seenHosts, $group['hosts']);
 
-// 	if ($group['parent_group_name'] == '' && str_contains($group['parent_group_name'],'/')) {
-// 		// Add only top level groups, children will be added recursively in addGroupRow()
-// 		$rows = [];
-// 		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
+}
+unset($group);
 
-// 		foreach ($rows as $row) {
-// 			$table->addRow($row);
-// 		}
-// 	}
-// }
+// // // Identify duplicate hosts
+$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
+// print_r($duplicateHosts);
+// print_r($data['host_groups']);
+foreach ($data['host_groups'] as $group_name => $group) {
+
+	if (array_intersect($duplicateHosts, $group['hosts']) && !str_contains($group['parent_group_name'],'/') ) {
+		// Add only top level groups, children will be added recursively in addGroupRow()
+		$rows = [];
+		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
+
+		foreach ($rows as $row) {
+			$table->addRow($row);
+		}
+	}
+}
 
 $form->addItem([$table,	$data['paging']]);
 
