@@ -1,102 +1,4 @@
-'ap/mist' => array(
-        'groupid' => 27,
-        'hosts' => array(10614),
-        'children' => array(),
-        'parent_group_name' => 'ap',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'ap' => array(
-        'groupid' => 100000,
-        'hosts' => array(),
-        'children' => array('ap/mist'),
-        'parent_group_name' => '',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'mag2/ap/mist' => array(
-        'groupid' => 29,
-        'hosts' => array(10614),
-        'children' => array(),
-        'parent_group_name' => 'mag2/ap',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'mag2' => array(
-        'groupid' => 100002,
-        'hosts' => array(10616),
-        'children' => array('mag2/ap', 'mag2/switche'),
-        'parent_group_name' => '',
-        'num_of_hosts' => 3,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'mag2/ap' => array(
-        'groupid' => 100001,
-        'hosts' => array(),
-        'children' => array('mag2/ap/mist'),
-        'parent_group_name' => 'mag2',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'mag2/switche/mist' => array(
-        'groupid' => 30,
-        'hosts' => array(10618),
-        'children' => array(),
-        'parent_group_name' => 'mag2/switche',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'mag2/switche' => array(
-        'groupid' => 100003,
-        'hosts' => array(),
-        'children' => array('mag2/switche/mist'),
-        'parent_group_name' => 'mag2',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'switch/mist' => array(
-        'groupid' => 28,
-        'hosts' => array(10618),
-        'children' => array(),
-        'parent_group_name' => 'switch',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-    'switch' => array(
-        'groupid' => 100004,
-        'hosts' => array(),
-        'children' => array('switch/mist'),
-        'parent_group_name' => '',
-        'num_of_hosts' => 1,
-        'problem_count' => array(5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0),
-        'is_collapsed' => 1,
-    ),
-);
-
-$groupsToDelete = [];
-
-foreach ($host_groups_to_show as $groupName => $group) {
-    // Check if hosts and parent_group_name meet deletion conditions
-    if (array_intersect($duplicateHosts, $group['hosts']) === $duplicateHosts && empty($group['parent_group_name'])) {
-        $groupsToDelete[] = $groupName;
-    }
-}
-
-// Remove groups that meet the deletion conditions
-foreach ($groupsToDelete as $groupName) {
-    unset($host_groups_to_show[$groupName]);
-}
-
 Group 'ap':
-
 Group ID: 100000
 Hosts: Empty array
 Children: 'ap/mist'
@@ -104,17 +6,17 @@ Parent Group Name: Empty
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'mag2/ap/mist':
 
-Group ID: 29
+Group 'ap/mist'
+Group ID: 27
 Hosts: 10614
 Children: Empty array
-Parent Group Name: mag2/ap
+Parent Group Name: ap
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'mag2':
 
+Group 'mag2':
 Group ID: 100002
 Hosts: 10616
 Children: 'mag2/ap', 'mag2/switche'
@@ -122,8 +24,8 @@ Parent Group Name: Empty
 Number of Hosts: 3
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'mag2/ap':
 
+Group 'mag2/ap':
 Group ID: 100001
 Hosts: Empty array
 Children: 'mag2/ap/mist'
@@ -131,17 +33,17 @@ Parent Group Name: mag2
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'mag2/switche/mist':
 
-Group ID: 30
-Hosts: 10618
+Group 'mag2/ap/mist':
+Group ID: 29
+Hosts: 10614
 Children: Empty array
-Parent Group Name: mag2/switche
+Parent Group Name: mag2/ap
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'mag2/switche':
 
+Group 'mag2/switche':
 Group ID: 100003
 Hosts: Empty array
 Children: 'mag2/switche/mist'
@@ -149,12 +51,30 @@ Parent Group Name: mag2
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
-Group 'switch':
 
+Group 'mag2/switche/mist':
+Group ID: 30
+Hosts: 10618
+Children: Empty array
+Parent Group Name: mag2/switche
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+
+Group 'switch':
 Group ID: 100004
 Hosts: Empty array
 Children: 'switch/mist'
 Parent Group Name: Empty
+Number of Hosts: 1
+Problem Count: Array with values for different severity levels (0 for all)
+Is Collapsed: 1
+
+Group 'switch/mist':
+Group ID: 28
+Hosts: 10618
+Children: Empty array
+Parent Group Name: switch
 Number of Hosts: 1
 Problem Count: Array with values for different severity levels (0 for all)
 Is Collapsed: 1
