@@ -42,20 +42,10 @@ $table->setHeader([
 	// (new CColHeader(_('Web')))
 ]);
 
-$seenHosts = [];
-foreach ($data['host_groups'] as $group_name => $group) {
-	$seenHosts = array_merge($seenHosts, $group['hosts']);
-
-}
-unset($group);
-
-// // // Identify duplicate hosts
-$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-// print_r($duplicateHosts);
 // print_r($data['host_groups']);
 foreach ($data['host_groups'] as $group_name => $group) {
 
-	if (array_intersect($duplicateHosts, $group['hosts']) && !str_contains($group['parent_group_name'],'/') ) {
+	if ($group['parent_group_name'] === '') {
 		// Add only top level groups, children will be added recursively in addGroupRow()
 		$rows = [];
 		addGroupRow($data, $rows, $group_name, '', 0, $child_stat);
