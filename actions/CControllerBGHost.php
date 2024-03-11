@@ -465,9 +465,10 @@ abstract class CControllerBGHost extends CController {
 
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			foreach ($duplicateHosts as $duphost) {
-				if (empty($group['parent_group_name']) && $duphost == $group['hosts']) {
-					print($duphost);
-				}
+				print($duphost);
+				// if (empty($group['parent_group_name']) && $duphost == $group['hosts']) {
+				// 	print($duphost);
+				// }
 			}
 		}
 		unset($group);
