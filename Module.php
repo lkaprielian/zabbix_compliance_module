@@ -33,7 +33,7 @@ class Module extends \Zabbix\Core\CModule {
 						->insertAfter('', (new \CMenuItem(_('Compliance')))
 							->setAction('compliance.view')
 						);
-		}
+	}
 
 	/**
 	 * Event handler, triggered before executing the action.
