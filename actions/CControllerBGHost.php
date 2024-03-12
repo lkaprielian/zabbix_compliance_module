@@ -130,7 +130,6 @@ abstract class CControllerBGHost extends CController {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
 		print_r($groupids);
-		print_r("\n");
 
 		// print_r($filter['groupids']); 
 
@@ -193,7 +192,7 @@ abstract class CControllerBGHost extends CController {
 					? null
 					: HOST_MAINTENANCE_STATUS_OFF
 			],
-			'selectHostGroups' => ['groupid', 'name'],
+			// 'selectHostGroups' => ['groupid', 'name'],
 			'sortfield' => 'name',
 			'limit' => $limit,
 			'preservekeys' => true,
