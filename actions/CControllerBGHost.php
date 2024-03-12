@@ -218,14 +218,17 @@ abstract class CControllerBGHost extends CController {
 		// }
 		//not here
 
-		// Filter hosts based on allowedGroupIds
-		foreach ($hosts as $hostId => &$hostInfo) {
-			$filteredHostGroups = array_filter($hostInfo['hostgroups'], function ($group) use ($groupids) {
-				return in_array($group['groupid'], $groupids);
-			});
-		
-			$hostInfo['hostgroups'] = array_values($filteredHostGroups); // Reset array keys
+		// Filter hosts based on allowedGroupIds**
+		if ($groupids != null) {
+			foreach ($hosts as $hostId => &$hostInfo) {
+				$filteredHostGroups = array_filter($hostInfo['hostgroups'], function ($group) use ($groupids) {
+					return in_array($group['groupid'], $groupids);
+				});
+			
+				$hostInfo['hostgroups'] = array_values($filteredHostGroups); // Reset array keys
+			}
 		}
+
 		
 		
 		// Display the updated arrays
