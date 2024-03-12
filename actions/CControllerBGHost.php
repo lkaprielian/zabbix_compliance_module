@@ -200,8 +200,7 @@ abstract class CControllerBGHost extends CController {
 			// 'selectTags' => ['tag', 'value'],
 			// 'selectInheritedTags' => ['tag', 'value']
 		]);
-
-		print_r($hosts);
+		// print_r($hosts);
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
 
@@ -218,6 +217,19 @@ abstract class CControllerBGHost extends CController {
 		// 	}
 		// }
 		//not here
+
+		// Filter hosts based on allowedGroupIds
+		foreach ($hosts as $hostId => &$hostInfo) {
+			$filteredHostGroups = array_filter($hostInfo['hostgroups'], function ($group) use ($groupids) {
+				return in_array($group['groupid'], $groupids);
+			});
+		
+			$hostInfo['hostgroups'] = array_values($filteredHostGroups); // Reset array keys
+		}
+		
+		
+		// Display the updated arrays
+		print_r($hosts);
 
 
 		foreach ($hosts as &$host) {
