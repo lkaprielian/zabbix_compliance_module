@@ -229,7 +229,7 @@ abstract class CControllerBGHost extends CController {
 		
 		
 		// Display the updated arrays
-		print_r($hosts);
+		// print_r($hosts);
 
 
 		foreach ($hosts as &$host) {
