@@ -46,7 +46,7 @@ $table->setHeader([
 foreach ($data['host_groups'] as $group_name => $group) {
 
 	// if ( $group['parent_group_name'] == '' and $group['hosts']){
-	if ( $group['parent_group_name'] == '' and $group['hosts']){
+	if ( $group['parent_group_name'] == ''){
 
 		// Add only top level groups, children will be added recursively in addGroupRow()
 		$rows = [];
