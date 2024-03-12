@@ -192,7 +192,7 @@ abstract class CControllerBGHost extends CController {
 					? null
 					: HOST_MAINTENANCE_STATUS_OFF
 			],
-			// 'selectHostGroups' => ['groupid', 'name'],
+			'selectHostGroups' => ['groupid', 'name'],
 			'sortfield' => 'name',
 			'limit' => $limit,
 			'preservekeys' => true,
@@ -253,7 +253,7 @@ abstract class CControllerBGHost extends CController {
 			}
 		}
 		unset($host);
-
+		print_r($host_groups);
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups) : krsort($host_groups);
 
 		$hosts_sorted_by_group = [];
