@@ -69,21 +69,19 @@ abstract class CControllerBGHost extends CController {
 	 * @return int
 	 */
 	protected function getCount(array $filter): int {
-		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
-
-		// $subgroup = getSubGroups($filter['groupids']);
-		// if (empty($subgroup)){
-		// 	$groupids = $filter['groupids'] ? $filter['groupids'] : null;
-		// } else {
-		// 	$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
-		// }
+		// $groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		$subgroup = getSubGroups($filter['groupids']);
+		if (empty($subgroup)){
+			$groupids = $filter['groupids'] ? $filter['groupids'] : null;
+		} else {
+			$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		}
 
 		return (int) API::Host()->get([
 			'countOutput' => true,
 			'evaltype' => $filter['evaltype'],
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
-			// 'groupids' => $filter['groupids']  ? $filter['groupids']  : null,
 			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
@@ -128,23 +126,14 @@ abstract class CControllerBGHost extends CController {
 	 */
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
-		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
-		// print_r($groupids);
 
-		// print_r($filter['groupids']); 
-
-		// $subgroup = getSubGroups($filter['groupids']);
-
-		// if ($subgroup){
-		// 	print("not empty");
-		// 	$groupids = $filter['groupids'] ? $filter['groupids'] : null;
-		// 	// print_r($groupids);
-		// } else {
-		// 	print("subgroup empty");
-		// 	$groupids = $filter['groupids'] ? $subgroup : null;
-		// 	// print_r($groupids);
-		// }
-
+		// $groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		$subgroup = getSubGroups($filter['groupids']);
+		if (empty($subgroup)){
+			$groupids = $filter['groupids'] ? $filter['groupids'] : null;
+		} else {
+			$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']) : null;
+		}
 
 		# get items by tag 
 		$items = API::Item()->get([
@@ -173,8 +162,6 @@ abstract class CControllerBGHost extends CController {
 			'evaltype' => $filter['evaltype'],
 			'tags' => $filter['tags'],
 			'inheritedTags' => true,
-			// 'groupids' => $filter['groupids']  ? $filter['groupids']  : null,
-			// 'groupids' => $filter['groupids'],
 			'groupids' => $groupids,
 			'severities' => $filter['severities'] ? $filter['severities'] : null,
 			'withProblemsSuppressed' => $filter['severities']
@@ -200,25 +187,8 @@ abstract class CControllerBGHost extends CController {
 			// 'selectTags' => ['tag', 'value'],
 			// 'selectInheritedTags' => ['tag', 'value']
 		]);
-		// print_r($hosts);
-		$host_groups = []; // Information about all groups to build a tree
-		$fake_group_id = 100000;
 
-		// print_r($hosts);
-		// foreach ($hosts as &$host){
-		// 	foreach ($host['hostgroups'] as $group) {
-		// 		$groupid = $group['groupid'];
-		// 		$groupname_full = $group['name'];
-		// 		if (str_contains($groupname_full, '/')) {
-		// 			print($groupname_full);
-		// 		}
-		// 	// unset($tthosts[0]);
-		// 	// print_r($tthosts );
-		// 	}
-		// }
-		//not here
-
-		// Filter hosts based on allowedGroupIds**
+		// Filter hosts based on allowed $groupids
 		if ($groupids != null) {
 			foreach ($hosts as $hostId => &$hostInfo) {
 				$filteredHostGroups = array_filter($hostInfo['hostgroups'], function ($group) use ($groupids) {
@@ -229,19 +199,13 @@ abstract class CControllerBGHost extends CController {
 			}
 		}
 
-		
-		
-		// Display the updated arrays
-		// print_r($hosts);
-
+		$host_groups = []; // Information about all groups to build a tree
+		$fake_group_id = 100000;
 
 		foreach ($hosts as &$host) {
-			// unset($host['hostgroups'][0]);
 			foreach ($host['hostgroups'] as $group) {
 				$groupid = $group['groupid'];
 				$groupname_full = $group['name'];
-				// if (str_contains($groupname_full, '/')) {
-				// print_r($groupname_full);
 				if (!array_key_exists($groupname_full, $host_groups)) {
 					$host_groups[$groupname_full] = [
 						'groupid' => $groupid,
@@ -270,7 +234,7 @@ abstract class CControllerBGHost extends CController {
 			}
 		}
 		unset($host);
-		// print_r($host_groups);
+
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups) : krsort($host_groups);
 
 		$hosts_sorted_by_group = [];
@@ -283,7 +247,6 @@ abstract class CControllerBGHost extends CController {
 		// Split result array and create paging.
 		$paging = CPagerHelper::paginate($filter['page'], $hosts_sorted_by_group, $filter['sortorder'], $view_curl);
 
-		// print_r($hosts_sorted_by_group);
 		// Get additional data to limited host amount.
 		$hosts = API::Host()->get([
 			'output' => ['hostid', 'name', 'status', 'maintenance_status', 'maintenanceid', 'maintenance_type'],
@@ -298,71 +261,13 @@ abstract class CControllerBGHost extends CController {
 
 		// Get only those groups that need to be shown
 		$host_groups_to_show = [];
-
-		#not here
-		// print_r($hosts_sorted_by_group);
 		foreach ($hosts_sorted_by_group as $host) {
-			// print_r($hosts_sorted_by_group);
-			// print_r($host['hostgroups']);
-			// foreach ($host['hostgroups'] as $group) {
-			// 	if (count($group > 1))
-			// 	{
-			// 		print_r($group);
-			// 	}
-			// }
-				// if (!array_key_exists($group['name'], $host_groups_to_show)) {	
-			// $subgroup =  $host['hostgroups'];
-			// $subgroup_length = count($subgroup);
-			// // print($subgroup);
-			// // print($subgroup_length);
-			// $all = [];
-			// // Compare each element with the element that follows it
-			// for ($i = 0; $i < $subgroup_length - 1; $i++) {
-			// 	$currentElement = $subgroup[$i];
-			// 	print_r($subgroup[$i]);
-			// 	if (!(str_contains($currentElement['name'],'/'))) {
-			// 		// print($currentElement['name']);
-			// 		$all1[] = $currentElement['name'];
-			// 		// for ($x = 0; $x < $subgroup_length - 1; $x++) {
-			// 		// 	$nextElement = $subgroup[$x];
-			// 		// 	if (str_contains($nextElement['name'],'/')){
-			// 		// 		if (str_contains($currentElement['name'], $nextElement['name'])) {
-			// 		// 			// $all = $nextElement['name'];
-			// 		// 			print($currentElement['name']);
-			// 		// 			$all[] = $currentElement['name'];
-			// 		// 		}
-			// 		// 		else{
-			// 		// 			print('no');
-			// 		// 		}
-							
-			// 		// 	}
-			// 		// }
-			// 	}
-			// 	$all[] = $all + $all1;
-			// 	// print_r($all);
-
-			// 	// if ($currentElement['name'] === $nextElement['name']) {
-			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are the same: $currentElement\n";
-			// 	// } else {
-			// 	// 	echo "Element at index $i and element at index " . ($i + 1) . " are different.\n";
-			// 	// }
-			// }
-			// $all_groups = [];
-			// print_r($host['hostgroups']);
-			// $test_value = "";
 			foreach ($host['hostgroups'] as $group) {
-				// $all_groups = array_merge($all_groups, $group);
-				// print($all_groups['name']);
-				// print_r($all_groups);
-				// $test_value = $group['name'];
 				if (!array_key_exists($group['name'], $host_groups_to_show)) {
-					// if (str_contains($test_value, '/'))
-					// if (str_contains($group['name'], '/') && $all_groups['name'] == $group['name']) {
 					$host_groups_to_show[$group['name']] = $host_groups[$group['name']];
 					$host_groups_to_show[$group['name']]['hosts'] = [ $host['hostid'] ];
 					// Make sure parent group exists as well
 					$grp_arr = explode('/', $group['name']);
-					// print_r($grp_arr);
 					for ($i = 1, $g_name = $grp_arr[0]; $i < count($grp_arr); $i++) {
 						if (!array_key_exists($g_name, $host_groups_to_show)) {
 							$host_groups_to_show[$g_name] = $host_groups[$g_name];
@@ -370,133 +275,28 @@ abstract class CControllerBGHost extends CController {
 						}
 						$g_name = $g_name.'/'.$grp_arr[$i];
 					}
-					// }		
-
-				} else {
+				} else {	
 					$host_groups_to_show[$group['name']]['hosts'][] = $host['hostid'];
 				}
 			}
-
-				// if (str_contains($group['name'], '/')) {
 		}
 
 		// Remove groups that are not to be shown from 'children' groups list
-		// print_r($host_groups_to_show);
-		
-		$seenHosts = [];
-
 		foreach ($host_groups_to_show as $group_name => &$group) {
 			$groups_to_delete = [];
-
-			// // Check if parent_group_name is empty and hosts have duplicates
-			// if (empty($group['parent_group_name']) && count($group['hosts']) !== count(array_unique($group['hosts']))) {
-			// 	$groupsToDelete[] = $group_name;
-			// }
-
-			// Update the list of seen hosts
-			$seenHosts = array_merge($seenHosts, $group['hosts']);
-			// print_r($group);
-			// [
-			// 	[
-			// 		'groupid' => 27,
-			// 		'hosts' => [10614],
-			// 		'children' => [],
-			// 		'parent_group_name' => '',
-			// 		'num_of_hosts' => 1,
-			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
-			// 		'is_collapsed' => 1,
-			// 	],
-			// 	[
-			// 		'groupid' => 29,
-			// 		'hosts' => [10614],
-			// 		'children' => [],
-			// 		'parent_group_name' => 'mag2',
-			// 		'num_of_hosts' => 1,
-			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
-			// 		'is_collapsed' => 1,
-			// 	],
-			// 	[
-			// 		'groupid' => 100000,
-			// 		'hosts' => [10616],
-			// 		'children' => ['mag2/ap', 'mag2/switches'],
-			// 		'parent_group_name' => '',
-			// 		'num_of_hosts' => 3,
-			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
-			// 		'is_collapsed' => 1,
-			// 	],
-			// 	[
-			// 		'groupid' => 30,
-			// 		'hosts' => [10618],
-			// 		'children' => [],
-			// 		'parent_group_name' => 'mag2',
-			// 		'num_of_hosts' => 1,
-			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
-			// 		'is_collapsed' => 1,
-			// 	],
-			// 	[
-			// 		'groupid' => 28,
-			// 		'hosts' => [10618],
-			// 		'children' => [],
-			// 		'parent_group_name' => '',
-			// 		'num_of_hosts' => 1,
-			// 		'problem_count' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0, 0 => 0],
-			// 		'is_collapsed' => 1,
-			// 	],
-			// ];
-			// $hosts_to_delete = [];
-
-
-			// print_r($hosts);
-
-
-
-
 
 			foreach ($group['children'] as $child_group_name) {
 				if (!array_key_exists($child_group_name, $host_groups_to_show)) {
 					$groups_to_delete[] = $child_group_name;
 				}
 			}
-			// foreach ($group['hosts'] as $host_group_name) {
-			// 	if (!array_key_exists($host_group_name, $host_groups_to_show)) {
-			// 		$hosts_to_delete[] = $host_group_name;
-			// 	}
-			// }
 			foreach ($groups_to_delete as $group_name) {
 				if (($key = array_search($group_name, $group['children'])) !== false) {
 				    unset($group['children'][$key]);
 				}
 			}
-			// print_r(count($group['hosts']));
-			// foreach ($hosts_to_delete as $group_name) {
-			// 	if (($key = array_search($group_name, $group['hosts'])) !== false  && count($group['hosts']) > 1 ) {
-			// 	    unset($group['hosts'][$key]);
-			// 	}
-			// }
 		}
 		unset($group);
-
-		// // // Identify duplicate hosts
-		// $duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-		// // print_r($duplicateHosts);
-
-		// $groupsToDelete = [];
-
-		// foreach ($host_groups_to_show as $groupName => $group) {
-		// 	// Check if hosts and parent_group_name meet deletion conditions
-		// 	if (array_intersect($duplicateHosts, $group['hosts']) && (empty($group['parent_group_name']) || str_contains($groupName, $group['parent_group_name']))) {
-		// 		$groupsToDelete[] = $groupName;
-		// 	}
-		// }
-		// // print_r($groupsToDelete);
-		// // Remove groups that meet the deletion conditions
-		// foreach ($groupsToDelete as $groupName) {
-		// 	unset($host_groups_to_show[$groupName]);
-		// }
-
-		// // print_r($host_groups_to_show);
-
-		// unset($group);
 
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 

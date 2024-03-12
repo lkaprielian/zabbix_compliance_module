@@ -10,19 +10,29 @@ class Module extends \Zabbix\Core\CModule {
 	 * Initialize module.
 	 */
 
+	// public function init(): void {
+	// 	// Initialize main menu (CMenu class instance).
+	// 	APP::Component()->get('menu.main')
+	// 		->findOrAdd(_('Tools'))
+	// 			->setIcon('icon-inventory')
+	// 				->getSubmenu()
+	// 					->insertAfter('', (new \CMenuItem(_('Compliance'))))
+	// 						->findOrAdd(_('Compliance'))
+	// 							->getSubmenu()
+	// 								->insertAfter('', (new \CMenuItem(_('Compliance tree')))
+	// 									->setAction('compliance.view')
+	// 								);
+
+		// }
 	public function init(): void {
 		// Initialize main menu (CMenu class instance).
 		APP::Component()->get('menu.main')
 			->findOrAdd(_('Tools'))
 				->setIcon('icon-inventory')
 					->getSubmenu()
-						->insertAfter('', (new \CMenuItem(_('Compliance'))))
-							->findOrAdd(_('Compliance'))
-								->getSubmenu()
-									->insertAfter('', (new \CMenuItem(_('Compliance tree')))
-										->setAction('compliance.view')
-									);
-
+						->insertAfter('', (new \CMenuItem(_('Compliance')))
+							->setAction('compliance.view')
+						);
 		}
 
 	/**

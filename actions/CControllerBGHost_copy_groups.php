@@ -129,6 +129,7 @@ abstract class CControllerBGHost extends CController {
 	protected function getData(array $filter): array {
 		$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
 		$groupids = $filter['groupids'] ? getSubGroups($filter['groupids']): null;
+		// print_r($groupids);
 
 		// print_r($filter['groupids']); 
 
@@ -199,8 +200,7 @@ abstract class CControllerBGHost extends CController {
 			// 'selectTags' => ['tag', 'value'],
 			// 'selectInheritedTags' => ['tag', 'value']
 		]);
-
-
+		// print_r($hosts);
 		$host_groups = []; // Information about all groups to build a tree
 		$fake_group_id = 100000;
 
@@ -217,6 +217,24 @@ abstract class CControllerBGHost extends CController {
 		// 	}
 		// }
 		//not here
+
+		// Filter hosts based on allowed $groupids
+		if ($groupids != null) {
+			foreach ($hosts as $hostId => &$hostInfo) {
+				$filteredHostGroups = array_filter($hostInfo['hostgroups'], function ($group) use ($groupids) {
+					return in_array($group['groupid'], $groupids);
+				});
+			
+				$hostInfo['hostgroups'] = array_values($filteredHostGroups); // Reset array keys
+			}
+		}
+
+		
+		
+		// Display the updated arrays
+		// print_r($hosts);
+
+
 		foreach ($hosts as &$host) {
 			// unset($host['hostgroups'][0]);
 			foreach ($host['hostgroups'] as $group) {
@@ -252,7 +270,7 @@ abstract class CControllerBGHost extends CController {
 			}
 		}
 		unset($host);
-
+		// print_r($host_groups);
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups) : krsort($host_groups);
 
 		$hosts_sorted_by_group = [];
@@ -458,34 +476,28 @@ abstract class CControllerBGHost extends CController {
 		}
 		unset($group);
 
-		// Identify duplicate hosts
-		$duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
-		// print_r($duplicateHosts);
+		// // // Identify duplicate hosts
+		// $duplicateHosts = array_diff_assoc($seenHosts, array_unique($seenHosts));
+		// // print_r($duplicateHosts);
 
-		$groupsToDelete = [];
+		// $groupsToDelete = [];
 
-		foreach ($host_groups_to_show as $groupName => $group) {
-			// Check if hosts and parent_group_name meet deletion conditions
-			if (array_intersect($duplicateHosts, $group['hosts']) && empty($group['parent_group_name'])) {
-				$groupsToDelete[] = $groupName;
-			}
-		}
-		// print_r($groupsToDelete);
-		// Remove groups that meet the deletion conditions
-		foreach ($groupsToDelete as $groupName) {
-			unset($host_groups_to_show[$groupName]);
-		}
-		
-		// print_r($host_groups_to_show);
-
-		unset($group);
-		// print_r($groupsToDelete);
-		// // Remove groups with duplicated hostid and empty parent_group_name
+		// foreach ($host_groups_to_show as $groupName => $group) {
+		// 	// Check if hosts and parent_group_name meet deletion conditions
+		// 	if (array_intersect($duplicateHosts, $group['hosts']) && (empty($group['parent_group_name']) || str_contains($groupName, $group['parent_group_name']))) {
+		// 		$groupsToDelete[] = $groupName;
+		// 	}
+		// }
+		// // print_r($groupsToDelete);
+		// // Remove groups that meet the deletion conditions
 		// foreach ($groupsToDelete as $groupName) {
 		// 	unset($host_groups_to_show[$groupName]);
 		// }
 
-		// print_r($host_groups_to_show);
+		// // print_r($host_groups_to_show);
+
+		// unset($group);
+
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups_to_show) : krsort($host_groups_to_show);
 
 		// Some hosts for shown groups can be on other pages thus not in $hosts_sorted_by_group
