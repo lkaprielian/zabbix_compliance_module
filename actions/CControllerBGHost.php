@@ -267,7 +267,7 @@ abstract class CControllerBGHost extends CController {
 			}
 		}
 		unset($host);
-		print_r($host_groups);
+		// print_r($host_groups);
 		$filter['sortorder'] == 'ASC' ? ksort($host_groups) : krsort($host_groups);
 
 		$hosts_sorted_by_group = [];
